@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rozcestník</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --text: #1d1d1f;
+    --muted: #6b6b70;
+    --border: #e4e2dd;
+    --accent: #2f6fde;
+    --accent-text: #ffffff;
+    --tag-web: #e3f1e6;
+    --tag-web-text: #1f6b35;
+    --tag-app: #f1ece3;
+    --tag-app-text: #7a5a1f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416;
+      --card: #1e1e21;
+      --text: #ececee;
+      --muted: #9a9aa0;
+      --border: #2e2e33;
+      --accent: #5b8ff0;
+      --accent-text: #0e0e10;
+      --tag-web: #1d3324;
+      --tag-web-text: #8fd6a2;
+      --tag-app: #352c1c;
+      --tag-app-text: #e2c27f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1 { font-size: 2rem; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .lead { color: var(--muted); margin: 0 0 32px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card h2 { font-size: 1.15rem; margin: 0; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.95rem; flex: 1; }
+  .tag {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .tag.web { background: var(--tag-web); color: var(--tag-web-text); }
+  .tag.app { background: var(--tag-app); color: var(--tag-app-text); }
+  .links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .links a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .links a.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  .links a:hover { filter: brightness(0.95); }
+  footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Rozcestník</h1>
+  <p class="lead">Všechny moje nakódované projekty na jednom místě.</p>
+  <div class="grid" id="grid"></div>
+  <footer>Nový projekt přidáš do seznamu <code>projects</code> v souboru index.html.</footer>
+</main>
+
+<script>
+  const GH = "https://github.com/jakubpechoucek-glitch/";
+  const PAGES = "https://jakubpechoucek-glitch.github.io/";
+
+  // web: odkaz na živou stránku (GitHub Pages). Bez webu se zobrazí jen odkaz na kód.
+  const projects = [
+    {
+      name: "Půdorysy Cvrčovice",
+      desc: "Interaktivní půdorysy nového domu s vrstvami: dveře, okna, povrchy, nábytek, EZS, svítidla.",
+      repo: "pudorysy-Cvrcovice",
+      web: PAGES + "pudorysy-Cvrcovice/",
+    },
+    {
+      name: "Financování RD",
+      desc: "Přehled financování rodinného domu Pěchoučkovi.",
+      repo: "assets_dashboard",
+      web: PAGES + "assets_dashboard/",
+    },
+    {
+      name: "Morning Briefing",
+      desc: "Automatický denní audio podcast o financích a geopolitice.",
+      repo: "news-podcast",
+      web: PAGES + "news-podcast/",
+    },
+    {
+      name: "Project Tracker",
+      desc: "Aplikace na sledování odpracovaného času na projektech (Home Credit).",
+      repo: "project_tracker",
+    },
+    {
+      name: "Směnné kurzy",
+      desc: "Sledování kurzů CZK ↔ EUR, GBP, PHP, USD s grafy, portfoliem a alarmy.",
+      repo: "smenne_kurzy",
+    },
+    {
+      name: "Task Manager",
+      desc: "Správce úkolů postavený na Next.js.",
+      repo: "task_manager",
+    },
+  ];
+
+  const grid = document.getElementById("grid");
+  for (const p of projects) {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <span class="tag ${p.web ? "web" : "app"}">${p.web ? "Webová stránka" : "Aplikace – jen kód"}</span>
+      <h2></h2>
+      <p></p>
+      <div class="links">
+        ${p.web ? `<a class="primary" href="${p.web}">Otevřít web</a>` : ""}
+        <a href="${GH + p.repo}">GitHub</a>
+      </div>`;
+    card.querySelector("h2").textContent = p.name;
+    card.querySelector("p").textContent = p.desc;
+    grid.appendChild(card);
+  }
+</script>
+</body>
+</html>

@@ -22,8 +22,6 @@
     --bond-bg: #ffffff;  --bond-ink: #12324a;  --bond-accent: #1f7a5c;
     --fx-bg: #0f1a17;    --fx-ink: #d8f3e7;    --fx-accent: #3ddc97;  --fx-down: #ff7a6b;
     --pod-from: #ff9a5a; --pod-to: #c2416b;    --pod-ink: #fff7f0;
-    --work-bg: #eef1fb;  --work-ink: #23305e;  --work-accent: #4a5fd6;
-    --task-bg: #ffffff;  --task-ink: #1c1c1e;  --task-accent: #8b5cf6;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -31,8 +29,6 @@
       --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
       --home-bg: #2b1d12;  --home-ink: #ffd2ad;
       --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
-      --work-bg: #1a1f33;  --work-ink: #d3dbff; --work-accent: #7d8ff0;
-      --task-bg: #1c1c20;  --task-ink: #ececef; --task-accent: #a98bfa;
     }
   }
   :root[data-theme="dark"] {
@@ -40,8 +36,6 @@
     --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
     --home-bg: #2b1d12;  --home-ink: #ffd2ad;
     --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
-    --work-bg: #1a1f33;  --work-ink: #d3dbff; --work-accent: #7d8ff0;
-    --task-bg: #1c1c20;  --task-ink: #ececef; --task-accent: #a98bfa;
   }
 
   * { box-sizing: border-box; }
@@ -115,16 +109,6 @@
   .meta .go { opacity: .7; transition: transform .18s ease; }
   .tile:hover .meta .go { transform: translateX(3px); opacity: 1; }
   .pill { padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; opacity: .85; }
-  .code-link {
-    position: relative; z-index: 2;
-    font-size: 0.8rem; font-weight: 600; color: inherit; opacity: .7;
-    text-decoration: underline; text-underline-offset: 3px;
-  }
-  .code-link:hover { opacity: 1; }
-  .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 14px; }
-  /* Pro dlaždice s odkazem na kód: hlavní odkaz překryje celou plochu */
-  .stretch::after { content: ""; position: absolute; inset: 0; z-index: 1; }
-  .tile .stretch { color: inherit; text-decoration: none; }
 
   /* --- Půdorysy: modrotisk --- */
   .t-plan {
@@ -173,11 +157,6 @@
   @keyframes eq { from { transform: scaleY(.45); } to { transform: scaleY(1); } }
   @media (prefers-reduced-motion: reduce) { .t-pod .bars rect { animation: none; } }
 
-  /* --- Project Tracker --- */
-  .t-work { background: var(--work-bg); color: var(--work-ink); }
-
-  /* --- Task Manager --- */
-  .t-task { background: var(--task-bg); color: var(--task-ink); border-color: var(--line); }
 
   footer { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
   footer code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.8rem; }
@@ -346,83 +325,6 @@
         <h3>Morning Briefing</h3>
         <p>Automatický denní audio podcast o financích a geopolitice.</p>
       </a>
-
-    </div>
-  </section>
-
-  <!-- ============ PRÁCE ============ -->
-  <section>
-    <h2>Práce a nástroje</h2>
-    <div class="grid">
-
-      <div class="tile t-work wide">
-        <div class="meta"><span class="pill">JEN KÓD</span></div>
-        <div class="art" aria-hidden="true">
-          <svg viewBox="0 0 360 110" fill="none">
-            <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity=".6">
-              <text x="70" y="12">Po</text><text x="120" y="12">Út</text><text x="170" y="12">St</text>
-              <text x="220" y="12">Čt</text><text x="270" y="12">Pá</text>
-            </g>
-            <g fill="currentColor" opacity=".1">
-              <rect x="60" y="20" width="44" height="22" rx="5"/><rect x="110" y="20" width="44" height="22" rx="5"/>
-              <rect x="160" y="20" width="44" height="22" rx="5"/><rect x="210" y="20" width="44" height="22" rx="5"/>
-              <rect x="260" y="20" width="44" height="22" rx="5"/>
-              <rect x="60" y="50" width="44" height="22" rx="5"/><rect x="110" y="50" width="44" height="22" rx="5"/>
-              <rect x="160" y="50" width="44" height="22" rx="5"/><rect x="210" y="50" width="44" height="22" rx="5"/>
-              <rect x="260" y="50" width="44" height="22" rx="5"/>
-              <rect x="60" y="80" width="44" height="22" rx="5"/><rect x="110" y="80" width="44" height="22" rx="5"/>
-              <rect x="160" y="80" width="44" height="22" rx="5"/><rect x="210" y="80" width="44" height="22" rx="5"/>
-              <rect x="260" y="80" width="44" height="22" rx="5"/>
-            </g>
-            <g fill="var(--work-accent)">
-              <rect x="60" y="20" width="44" height="22" rx="5"/><rect x="160" y="20" width="44" height="22" rx="5"/>
-              <rect x="110" y="50" width="44" height="22" rx="5"/><rect x="210" y="50" width="44" height="22" rx="5"/>
-              <rect x="260" y="80" width="44" height="22" rx="5"/><rect x="160" y="80" width="44" height="22" rx="5" opacity=".5"/>
-            </g>
-            <g fill="currentColor" opacity=".55">
-              <rect x="0" y="27" width="46" height="8" rx="4"/><rect x="0" y="57" width="38" height="8" rx="4"/><rect x="0" y="87" width="42" height="8" rx="4"/>
-            </g>
-            <!-- součet týdne -->
-            <g font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">
-              <text x="318" y="35">8h</text><text x="318" y="65">8h</text><text x="318" y="95">6h</text>
-            </g>
-          </svg>
-        </div>
-        <div class="foot">
-          <div>
-            <h3>Project Tracker</h3>
-            <p>Sledování odpracovaného času na projektech (Home Credit).</p>
-          </div>
-          <a class="code-link stretch" href="https://github.com/jakubpechoucek-glitch/project_tracker">GitHub&nbsp;→</a>
-        </div>
-      </div>
-
-      <div class="tile t-task wide">
-        <div class="meta"><span class="pill">JEN KÓD</span></div>
-        <div class="art" aria-hidden="true">
-          <svg viewBox="0 0 220 110" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <g stroke="var(--task-accent)" stroke-width="2.2">
-              <rect x="10" y="10" width="20" height="20" rx="5" fill="var(--task-accent)"/>
-              <path d="M15 20 l4 4 l7 -9" stroke="#fff"/>
-              <rect x="10" y="45" width="20" height="20" rx="5" fill="var(--task-accent)"/>
-              <path d="M15 55 l4 4 l7 -9" stroke="#fff"/>
-              <rect x="10" y="80" width="20" height="20" rx="5"/>
-            </g>
-            <g stroke="currentColor" stroke-width="7" opacity=".18">
-              <path d="M46 20 H170"/><path d="M46 55 H140"/>
-            </g>
-            <path d="M46 20 H170 M46 55 H140" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
-            <path d="M46 90 H190" stroke="currentColor" stroke-width="7" opacity=".55"/>
-          </svg>
-        </div>
-        <div class="foot">
-          <div>
-            <h3>Task Manager</h3>
-            <p>Správce úkolů postavený na Next.js.</p>
-          </div>
-          <a class="code-link stretch" href="https://github.com/jakubpechoucek-glitch/task_manager">GitHub&nbsp;→</a>
-        </div>
-      </div>
 
     </div>
   </section>

@@ -4,150 +4,430 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rozcestník</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f6f5f2;
-    --card: #ffffff;
-    --text: #1d1d1f;
-    --muted: #6b6b70;
-    --border: #e4e2dd;
-    --accent: #2f6fde;
-    --accent-text: #ffffff;
-    --tag-web: #e3f1e6;
-    --tag-web-text: #1f6b35;
-    --tag-app: #f1ece3;
-    --tag-app-text: #7a5a1f;
+    --bg: #f4f2ee;
+    --text: #1c1c1e;
+    --muted: #66656b;
+    --line: #dedad2;
+    --tile: #ffffff;
+
+    /* barvy jednotlivých dlaždic */
+    --plan-bg: #17325c;  --plan-ink: #dce8ff;  --plan-grid: rgba(220,232,255,.09);
+    --diary-bg: #f3ead8; --diary-ink: #3b2f1c; --diary-rule: #e2d4b6; --diary-hazard: #f2b705;
+    --home-bg: #fdf1e6;  --home-ink: #7a3e12;  --home-accent: #e07a2e;
+    --bond-bg: #ffffff;  --bond-ink: #12324a;  --bond-accent: #1f7a5c;
+    --fx-bg: #0f1a17;    --fx-ink: #d8f3e7;    --fx-accent: #3ddc97;  --fx-down: #ff7a6b;
+    --pod-from: #ff9a5a; --pod-to: #c2416b;    --pod-ink: #fff7f0;
+    --work-bg: #eef1fb;  --work-ink: #23305e;  --work-accent: #4a5fd6;
+    --task-bg: #ffffff;  --task-ink: #1c1c1e;  --task-accent: #8b5cf6;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141416;
-      --card: #1e1e21;
-      --text: #ececee;
-      --muted: #9a9aa0;
-      --border: #2e2e33;
-      --accent: #5b8ff0;
-      --accent-text: #0e0e10;
-      --tag-web: #1d3324;
-      --tag-web-text: #8fd6a2;
-      --tag-app: #352c1c;
-      --tag-app-text: #e2c27f;
+    :root:not([data-theme="light"]) {
+      --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
+      --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
+      --home-bg: #2b1d12;  --home-ink: #ffd2ad;
+      --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
+      --work-bg: #1a1f33;  --work-ink: #d3dbff; --work-accent: #7d8ff0;
+      --task-bg: #1c1c20;  --task-ink: #ececef; --task-accent: #a98bfa;
     }
   }
+  :root[data-theme="dark"] {
+    --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
+    --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
+    --home-bg: #2b1d12;  --home-ink: #ffd2ad;
+    --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
+    --work-bg: #1a1f33;  --work-ink: #d3dbff; --work-accent: #7d8ff0;
+    --task-bg: #1c1c20;  --task-ink: #ececef; --task-accent: #a98bfa;
+  }
+
   * { box-sizing: border-box; }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font: 16px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  main { max-width: 960px; margin: 0 auto; padding: 48px 16px 64px; }
-  h1 { font-size: 2rem; margin: 0 0 4px; letter-spacing: -0.02em; }
-  .lead { color: var(--muted); margin: 0 0 32px; }
+  main { max-width: 1120px; margin: 0 auto; padding: 56px 16px 64px; }
+  header h1 {
+    font: 600 clamp(2.2rem, 5vw, 3.2rem)/1.05 Fraunces, Georgia, serif;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  header p { color: var(--muted); margin: 0 0 40px; max-width: 46ch; }
+
+  section { margin-bottom: 40px; }
+  section > h2 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  section > h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
+  .wide { grid-column: span 2; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .wide { grid-column: auto; }
+  }
+
+  /* Dlaždice je celá klikací odkaz */
+  .tile {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
-  .card h2 { font-size: 1.15rem; margin: 0; }
-  .card p { margin: 0; color: var(--muted); font-size: 0.95rem; flex: 1; }
-  .tag {
-    align-self: flex-start;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 999px;
-  }
-  .tag.web { background: var(--tag-web); color: var(--tag-web-text); }
-  .tag.app { background: var(--tag-app); color: var(--tag-app-text); }
-  .links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-  .links a {
+    min-height: 260px;
+    padding: 20px;
+    border-radius: 18px;
+    overflow: hidden;
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    color: var(--text);
+    color: inherit;
+    border: 1px solid transparent;
+    transition: transform .18s ease, box-shadow .18s ease;
   }
-  .links a.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-  .links a:hover { filter: brightness(0.95); }
-  footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; }
+  .tile:hover, .tile:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -14px rgba(0,0,0,.35);
+  }
+  .tile:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+  .tile .art { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 110px; margin: 4px 0 14px; }
+  .tile .art svg { width: 100%; max-height: 150px; }
+  .tile h3 { margin: 0 0 4px; font-size: 1.2rem; letter-spacing: -0.01em; }
+  .tile p { margin: 0; font-size: 0.92rem; opacity: .78; }
+  .meta {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: .02em;
+  }
+  .meta .go { opacity: .7; transition: transform .18s ease; }
+  .tile:hover .meta .go { transform: translateX(3px); opacity: 1; }
+  .pill { padding: 2px 9px; border-radius: 999px; border: 1px solid currentColor; opacity: .85; }
+  .code-link {
+    position: relative; z-index: 2;
+    font-size: 0.8rem; font-weight: 600; color: inherit; opacity: .7;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .code-link:hover { opacity: 1; }
+  .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 14px; }
+  /* Pro dlaždice s odkazem na kód: hlavní odkaz překryje celou plochu */
+  .stretch::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .tile .stretch { color: inherit; text-decoration: none; }
+
+  /* --- Půdorysy: modrotisk --- */
+  .t-plan {
+    background-color: var(--plan-bg);
+    background-image:
+      linear-gradient(var(--plan-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--plan-grid) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--plan-ink);
+  }
+  .t-plan h3 { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.1rem; letter-spacing: 0; }
+
+  /* --- Stavební deník: papír + výstražný pruh --- */
+  .t-diary {
+    background-color: var(--diary-bg);
+    background-image: repeating-linear-gradient(transparent 0 27px, var(--diary-rule) 27px 28px);
+    color: var(--diary-ink);
+    padding-top: 30px;
+  }
+  .t-diary::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 10px;
+    background: repeating-linear-gradient(-45deg, var(--diary-hazard) 0 12px, #1c1c1e 12px 24px);
+  }
+  .t-diary h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; }
+
+  /* --- Financování RD --- */
+  .t-home { background: var(--home-bg); color: var(--home-ink); }
+
+  /* --- Státní dluhopisy --- */
+  .t-bond { background: var(--bond-bg); color: var(--bond-ink); border-color: var(--line); }
+  .t-bond h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+
+  /* --- Směnné kurzy: burzovní terminál --- */
+  .t-fx { background: var(--fx-bg); color: var(--fx-ink); }
+  .t-fx .ticker {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    font: 500 0.8rem/1.4 "JetBrains Mono", ui-monospace, monospace;
+  }
+  .t-fx .up { color: var(--fx-accent); }
+  .t-fx .down { color: var(--fx-down); }
+  .t-fx .pill { color: var(--fx-accent); }
+
+  /* --- Morning Briefing: svítání --- */
+  .t-pod { background: linear-gradient(135deg, var(--pod-from), var(--pod-to)); color: var(--pod-ink); }
+  .t-pod .bars rect { animation: eq 1.4s ease-in-out infinite alternate; transform-origin: center; transform-box: fill-box; }
+  @keyframes eq { from { transform: scaleY(.45); } to { transform: scaleY(1); } }
+  @media (prefers-reduced-motion: reduce) { .t-pod .bars rect { animation: none; } }
+
+  /* --- Project Tracker --- */
+  .t-work { background: var(--work-bg); color: var(--work-ink); }
+
+  /* --- Task Manager --- */
+  .t-task { background: var(--task-bg); color: var(--task-ink); border-color: var(--line); }
+
+  footer { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
+  footer code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.8rem; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Rozcestník</h1>
-  <p class="lead">Všechny moje nakódované projekty na jednom místě.</p>
-  <div class="grid" id="grid"></div>
-  <footer>Nový projekt přidáš do seznamu <code>projects</code> v souboru index.html.</footer>
+  <header>
+    <h1>Rozcestník</h1>
+    <p>Všechno, co jsem si nakódoval, na jednom místě — od stavby domu po kurzy měn.</p>
+  </header>
+
+  <!-- ============ DŮM ============ -->
+  <section>
+    <h2>Dům Cvrčovice</h2>
+    <div class="grid">
+
+      <a class="tile t-plan wide" href="https://jakubpechoucek-glitch.github.io/pudorysy-Cvrcovice/">
+        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 150" fill="none" stroke="currentColor" stroke-linecap="square">
+            <!-- obvodové zdi -->
+            <path d="M20 12 H340 V138 H20 Z" stroke-width="5"/>
+            <!-- příčky -->
+            <path d="M140 12 V70 M140 96 V138 M140 70 H240 M240 12 V58 M240 84 V138" stroke-width="3"/>
+            <!-- dveře s obloukem -->
+            <path d="M140 96 L114 96" stroke-width="1.5"/>
+            <path d="M114 96 A26 26 0 0 1 140 70" stroke-width="1" stroke-dasharray="3 3"/>
+            <path d="M240 84 L266 84" stroke-width="1.5"/>
+            <path d="M266 84 A26 26 0 0 0 240 58" stroke-width="1" stroke-dasharray="3 3"/>
+            <!-- okna -->
+            <path d="M60 12 H105 M280 12 H320 M180 138 H220 M340 40 V75" stroke="var(--plan-bg)" stroke-width="5"/>
+            <path d="M60 10 H105 M60 14 H105 M280 10 H320 M280 14 H320 M180 136 H220 M180 140 H220 M338 40 V75 M342 40 V75" stroke-width="1"/>
+            <!-- kóty -->
+            <path d="M20 146 V150 M340 146 V150" stroke-width="1" opacity=".6"/>
+            <!-- popisky místností -->
+            <g fill="currentColor" stroke="none" font-family="JetBrains Mono, monospace" font-size="10" opacity=".75">
+              <text x="48" y="80">OBÝVÁK</text>
+              <text x="160" y="40">KUCHYŇ</text>
+              <text x="166" y="120">KOUPELNA</text>
+              <text x="266" y="120">LOŽNICE</text>
+            </g>
+            <!-- svítidla -->
+            <g fill="currentColor" stroke="none" opacity=".9">
+              <circle cx="80" cy="50" r="3"/><circle cx="190" cy="100" r="3"/><circle cx="290" cy="60" r="3"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Půdorysy&nbsp;Cvrčovice</h3>
+        <p>Interaktivní půdorysy domu s vrstvami: dveře, okna, povrchy, nábytek, EZS, svítidla.</p>
+      </a>
+
+      <a class="tile t-diary" href="https://jakubpechoucek-glitch.github.io/stavebnidennik/">
+        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- deník -->
+            <rect x="30" y="14" width="76" height="96" rx="4"/>
+            <path d="M42 14 V110" opacity=".5"/>
+            <path d="M52 34 H94 M52 48 H94 M52 62 H84 M52 76 H90" opacity=".6"/>
+            <path d="M52 92 l6 6 l12 -14" stroke="var(--diary-hazard)" stroke-width="3"/>
+            <!-- tužka -->
+            <path d="M118 22 L136 40 L104 100 L96 104 L98 95 Z" fill="var(--diary-hazard)" fill-opacity=".9"/>
+            <path d="M112 34 L130 52"/>
+          </svg>
+        </div>
+        <h3>Stavební deník</h3>
+        <p>Záznamy z průběhu stavby den po dni.</p>
+      </a>
+
+      <a class="tile t-home" href="https://jakubpechoucek-glitch.github.io/assets_dashboard/">
+        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M20 58 L68 20 L116 58"/>
+            <path d="M30 50 V104 H106 V50"/>
+            <rect x="58" y="74" width="20" height="30"/>
+            <!-- mince -->
+            <g fill="var(--home-accent)" stroke="var(--home-bg)" stroke-width="2.5">
+              <ellipse cx="128" cy="100" rx="20" ry="7"/>
+              <ellipse cx="128" cy="91" rx="20" ry="7"/>
+              <ellipse cx="128" cy="82" rx="20" ry="7"/>
+              <ellipse cx="128" cy="73" rx="20" ry="7"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Financování RD</h3>
+        <p>Přehled financování rodinného domu Pěchoučkovi.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ PENÍZE ============ -->
+  <section>
+    <h2>Peníze a trhy</h2>
+    <div class="grid">
+
+      <a class="tile t-fx wide" href="https://smenne-kurzy.onrender.com">
+        <div class="meta"><span class="pill">APLIKACE · start ~1 min</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke="currentColor" stroke-opacity=".12" stroke-width="1">
+              <path d="M0 30 H360 M0 60 H360 M0 90 H360"/>
+            </g>
+            <path d="M0 84 L24 78 L48 82 L72 66 L96 70 L120 58 L144 64 L168 48 L192 54 L216 40 L240 46 L264 34 L288 42 L312 26 L336 30 L360 18"
+                  stroke="var(--fx-accent)" stroke-width="2.5"/>
+            <path d="M0 84 L24 78 L48 82 L72 66 L96 70 L120 58 L144 64 L168 48 L192 54 L216 40 L240 46 L264 34 L288 42 L312 26 L336 30 L360 18 V120 H0 Z"
+                  fill="var(--fx-accent)" fill-opacity=".1"/>
+            <path d="M0 100 L30 96 L60 104 L90 98 L120 102 L150 92 L180 96 L210 90 L240 98 L270 94 L300 100 L330 96 L360 104"
+                  stroke="var(--fx-down)" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"/>
+            <circle cx="360" cy="18" r="4" fill="var(--fx-accent)"/>
+          </svg>
+        </div>
+        <div class="ticker" aria-hidden="true">
+          <span>EUR/CZK <span class="up">▲</span></span>
+          <span>USD/CZK <span class="down">▼</span></span>
+          <span>GBP/CZK <span class="up">▲</span></span>
+          <span>PHP/CZK <span class="down">▼</span></span>
+        </div>
+        <h3 style="margin-top:10px">Směnné kurzy</h3>
+        <p>Kurzy CZK ↔ EUR, GBP, PHP, USD s grafy, portfoliem a alarmy. Běží na Renderu — první načtení chvíli trvá, než se server probudí.</p>
+      </a>
+
+      <a class="tile t-bond" href="https://jakubpechoucek-glitch.github.io/statni-dluhopisy/">
+        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-linecap="round">
+            <!-- výnosová křivka -->
+            <path d="M14 104 H150 M14 104 V14" stroke-width="1.5" opacity=".4"/>
+            <g stroke-width="1" opacity=".35" font-size="8">
+              <path d="M40 104 v4 M70 104 v4 M100 104 v4 M130 104 v4"/>
+            </g>
+            <path d="M18 88 C40 58, 64 44, 94 38 S136 30, 148 28" stroke="var(--bond-accent)" stroke-width="2.8"/>
+            <g fill="var(--bond-accent)">
+              <circle cx="40" cy="62" r="3.5"/><circle cx="70" cy="46" r="3.5"/>
+              <circle cx="100" cy="37" r="3.5"/><circle cx="130" cy="31" r="3.5"/>
+            </g>
+            <g fill="currentColor" font-family="JetBrains Mono, monospace" font-size="8" opacity=".6">
+              <text x="34" y="118">2R</text><text x="64" y="118">5R</text><text x="92" y="118">10R</text><text x="122" y="118">30R</text>
+            </g>
+          </svg>
+        </div>
+        <h3>Státní dluhopisy</h3>
+        <p>Přehled státních dluhopisů a jejich výnosů.</p>
+      </a>
+
+      <a class="tile t-pod" href="https://jakubpechoucek-glitch.github.io/news-podcast/">
+        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 160 120">
+            <!-- slunce -->
+            <circle cx="80" cy="70" r="30" fill="currentColor" opacity=".18"/>
+            <g class="bars" fill="currentColor">
+              <rect x="22"  y="46" width="8" height="48" rx="4" style="animation-delay:-.2s"/>
+              <rect x="38"  y="34" width="8" height="72" rx="4" style="animation-delay:-.9s"/>
+              <rect x="54"  y="52" width="8" height="36" rx="4" style="animation-delay:-.5s"/>
+              <rect x="70"  y="24" width="8" height="92" rx="4" style="animation-delay:-1.1s"/>
+              <rect x="86"  y="40" width="8" height="60" rx="4" style="animation-delay:-.3s"/>
+              <rect x="102" y="30" width="8" height="80" rx="4" style="animation-delay:-.7s"/>
+              <rect x="118" y="50" width="8" height="40" rx="4" style="animation-delay:-1.3s"/>
+              <rect x="134" y="44" width="8" height="52" rx="4" style="animation-delay:-.1s"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Morning Briefing</h3>
+        <p>Automatický denní audio podcast o financích a geopolitice.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ PRÁCE ============ -->
+  <section>
+    <h2>Práce a nástroje</h2>
+    <div class="grid">
+
+      <div class="tile t-work wide">
+        <div class="meta"><span class="pill">JEN KÓD</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 110" fill="none">
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="currentColor" opacity=".6">
+              <text x="70" y="12">Po</text><text x="120" y="12">Út</text><text x="170" y="12">St</text>
+              <text x="220" y="12">Čt</text><text x="270" y="12">Pá</text>
+            </g>
+            <g fill="currentColor" opacity=".1">
+              <rect x="60" y="20" width="44" height="22" rx="5"/><rect x="110" y="20" width="44" height="22" rx="5"/>
+              <rect x="160" y="20" width="44" height="22" rx="5"/><rect x="210" y="20" width="44" height="22" rx="5"/>
+              <rect x="260" y="20" width="44" height="22" rx="5"/>
+              <rect x="60" y="50" width="44" height="22" rx="5"/><rect x="110" y="50" width="44" height="22" rx="5"/>
+              <rect x="160" y="50" width="44" height="22" rx="5"/><rect x="210" y="50" width="44" height="22" rx="5"/>
+              <rect x="260" y="50" width="44" height="22" rx="5"/>
+              <rect x="60" y="80" width="44" height="22" rx="5"/><rect x="110" y="80" width="44" height="22" rx="5"/>
+              <rect x="160" y="80" width="44" height="22" rx="5"/><rect x="210" y="80" width="44" height="22" rx="5"/>
+              <rect x="260" y="80" width="44" height="22" rx="5"/>
+            </g>
+            <g fill="var(--work-accent)">
+              <rect x="60" y="20" width="44" height="22" rx="5"/><rect x="160" y="20" width="44" height="22" rx="5"/>
+              <rect x="110" y="50" width="44" height="22" rx="5"/><rect x="210" y="50" width="44" height="22" rx="5"/>
+              <rect x="260" y="80" width="44" height="22" rx="5"/><rect x="160" y="80" width="44" height="22" rx="5" opacity=".5"/>
+            </g>
+            <g fill="currentColor" opacity=".55">
+              <rect x="0" y="27" width="46" height="8" rx="4"/><rect x="0" y="57" width="38" height="8" rx="4"/><rect x="0" y="87" width="42" height="8" rx="4"/>
+            </g>
+            <!-- součet týdne -->
+            <g font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">
+              <text x="318" y="35">8h</text><text x="318" y="65">8h</text><text x="318" y="95">6h</text>
+            </g>
+          </svg>
+        </div>
+        <div class="foot">
+          <div>
+            <h3>Project Tracker</h3>
+            <p>Sledování odpracovaného času na projektech (Home Credit).</p>
+          </div>
+          <a class="code-link stretch" href="https://github.com/jakubpechoucek-glitch/project_tracker">GitHub&nbsp;→</a>
+        </div>
+      </div>
+
+      <div class="tile t-task wide">
+        <div class="meta"><span class="pill">JEN KÓD</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 220 110" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke="var(--task-accent)" stroke-width="2.2">
+              <rect x="10" y="10" width="20" height="20" rx="5" fill="var(--task-accent)"/>
+              <path d="M15 20 l4 4 l7 -9" stroke="#fff"/>
+              <rect x="10" y="45" width="20" height="20" rx="5" fill="var(--task-accent)"/>
+              <path d="M15 55 l4 4 l7 -9" stroke="#fff"/>
+              <rect x="10" y="80" width="20" height="20" rx="5"/>
+            </g>
+            <g stroke="currentColor" stroke-width="7" opacity=".18">
+              <path d="M46 20 H170"/><path d="M46 55 H140"/>
+            </g>
+            <path d="M46 20 H170 M46 55 H140" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+            <path d="M46 90 H190" stroke="currentColor" stroke-width="7" opacity=".55"/>
+          </svg>
+        </div>
+        <div class="foot">
+          <div>
+            <h3>Task Manager</h3>
+            <p>Správce úkolů postavený na Next.js.</p>
+          </div>
+          <a class="code-link stretch" href="https://github.com/jakubpechoucek-glitch/task_manager">GitHub&nbsp;→</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>Nový projekt přidáš zkopírováním jedné dlaždice (<code>&lt;a class="tile …"&gt;</code>) do příslušné sekce v souboru index.html.</footer>
 </main>
-
-<script>
-  const GH = "https://github.com/jakubpechoucek-glitch/";
-  const PAGES = "https://jakubpechoucek-glitch.github.io/";
-
-  // web: odkaz na živou stránku (GitHub Pages). Bez webu se zobrazí jen odkaz na kód.
-  const projects = [
-    {
-      name: "Půdorysy Cvrčovice",
-      desc: "Interaktivní půdorysy nového domu s vrstvami: dveře, okna, povrchy, nábytek, EZS, svítidla.",
-      repo: "pudorysy-Cvrcovice",
-      web: PAGES + "pudorysy-Cvrcovice/",
-    },
-    {
-      name: "Financování RD",
-      desc: "Přehled financování rodinného domu Pěchoučkovi.",
-      repo: "assets_dashboard",
-      web: PAGES + "assets_dashboard/",
-    },
-    {
-      name: "Morning Briefing",
-      desc: "Automatický denní audio podcast o financích a geopolitice.",
-      repo: "news-podcast",
-      web: PAGES + "news-podcast/",
-    },
-    {
-      name: "Project Tracker",
-      desc: "Aplikace na sledování odpracovaného času na projektech (Home Credit).",
-      repo: "project_tracker",
-    },
-    {
-      name: "Směnné kurzy",
-      desc: "Sledování kurzů CZK ↔ EUR, GBP, PHP, USD s grafy, portfoliem a alarmy.",
-      repo: "smenne_kurzy",
-    },
-    {
-      name: "Task Manager",
-      desc: "Správce úkolů postavený na Next.js.",
-      repo: "task_manager",
-    },
-  ];
-
-  const grid = document.getElementById("grid");
-  for (const p of projects) {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <span class="tag ${p.web ? "web" : "app"}">${p.web ? "Webová stránka" : "Aplikace – jen kód"}</span>
-      <h2></h2>
-      <p></p>
-      <div class="links">
-        ${p.web ? `<a class="primary" href="${p.web}">Otevřít web</a>` : ""}
-        <a href="${GH + p.repo}">GitHub</a>
-      </div>`;
-    card.querySelector("h2").textContent = p.name;
-    card.querySelector("p").textContent = p.desc;
-    grid.appendChild(card);
-  }
-</script>
 </body>
 </html>

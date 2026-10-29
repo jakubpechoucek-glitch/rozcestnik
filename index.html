@@ -179,6 +179,52 @@
   .t-uni h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
   .t-uni .pill { color: var(--uni-gold); }
 
+  /* --- Backlog nápadů --- */
+  .backlog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .backlog { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .backlog { grid-template-columns: 1fr; } }
+  .idea {
+    position: relative;
+    display: flex; flex-direction: column; gap: 10px;
+    min-height: 112px;
+    padding: 14px 14px 12px;
+    border: 1.5px dashed var(--line);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--tile) 55%, transparent);
+  }
+  .idea .kind {
+    align-self: flex-start;
+    font: 500 0.68rem/1 "JetBrains Mono", ui-monospace, monospace;
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted);
+  }
+  .idea .text { flex: 1; font-size: 0.95rem; line-height: 1.35; overflow-wrap: anywhere; }
+  .idea .actions { display: flex; justify-content: space-between; align-items: center; }
+  .idea label { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); cursor: pointer; }
+  .idea input[type=checkbox] { accent-color: var(--text); margin: 0; }
+  .idea .del {
+    border: 0; background: none; color: var(--muted); cursor: pointer;
+    font-size: 1.1rem; line-height: 1; padding: 2px 4px; border-radius: 6px;
+    opacity: 0; transition: opacity .15s;
+  }
+  .idea:hover .del, .idea .del:focus-visible { opacity: 1; }
+  @media (hover: none) { .idea .del { opacity: .6; } }
+  .idea.done { opacity: .5; }
+  .idea.done .text { text-decoration: line-through; }
+  .add-idea { border-style: solid; border-color: var(--text); background: var(--tile); }
+  .add-idea textarea {
+    flex: 1; resize: none; border: 0; outline: 0; background: none; color: var(--text);
+    font: inherit; font-size: 0.95rem; min-height: 48px;
+  }
+  .add-idea button {
+    align-self: flex-end;
+    border: 0; border-radius: 999px; padding: 6px 14px;
+    background: var(--text); color: var(--bg);
+    font: 600 0.8rem Inter, sans-serif; cursor: pointer;
+  }
+  .add-idea button:disabled { opacity: .35; cursor: default; }
+  .backlog-note { color: var(--muted); font-size: 0.8rem; margin: 10px 0 0; }
+
   footer { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
   footer code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.8rem; }
 </style>
@@ -399,7 +445,99 @@
     </div>
   </section>
 
+  <!-- ============ BACKLOG ============ -->
+  <section>
+    <h2>Backlog nápadů</h2>
+    <div class="backlog" id="backlog">
+      <form class="idea add-idea" id="add-idea">
+        <span class="kind">+ Nový nápad</span>
+        <textarea id="idea-text" rows="2" placeholder="Agent / aplikace na…" aria-label="Nový nápad"></textarea>
+        <button type="submit" disabled>Přidat</button>
+      </form>
+    </div>
+    <p class="backlog-note">Přidané nápady a odškrtnutí se ukládají jen v tomhle prohlížeči.</p>
+  </section>
+
   <footer>Nový projekt přidáš zkopírováním jedné dlaždice (<code>&lt;a class="tile …"&gt;</code>) do příslušné sekce v souboru index.html.</footer>
 </main>
+<script>
+  // Výchozí nápady. Nové trvale přidáš sem; ty z formuláře se ukládají do localStorage.
+  const SEED = [
+    { id: "s1", kind: "Pojištění", text: "Pojištění Chabry II a Brandýs" },
+    { id: "s2", kind: "Auto", text: "Nové povinné ručení KIA" },
+    { id: "s3", kind: "Prodej", text: "Prodej starého laptopu přes Marketplace" },
+    { id: "s4", kind: "Finance", text: "Osobní finance / cash flow" },
+    { id: "s5", kind: "Nemovitosti", text: "Byty – přehled podobný Excelu" },
+    { id: "s6", kind: "Investice", text: "Přehled investic" },
+    { id: "s7", kind: "Cestování", text: "Přehled cestování po světě podle pasu" },
+    { id: "s8", kind: "Knihy", text: "Přehled přečtených knížek + summary data" },
+  ];
+  const KEY = "rozcestnik-backlog";
+
+  function load() {
+    try {
+      const st = JSON.parse(localStorage.getItem(KEY));
+      if (st && Array.isArray(st.added)) return { added: st.added, done: st.done || [], removed: st.removed || [] };
+    } catch (e) {}
+    return { added: [], done: [], removed: [] };
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  const state = load();
+  const list = document.getElementById("backlog");
+  const form = document.getElementById("add-idea");
+  const input = document.getElementById("idea-text");
+  const submit = form.querySelector("button");
+
+  function render() {
+    list.querySelectorAll(".idea:not(.add-idea)").forEach(el => el.remove());
+    const items = [...SEED, ...state.added].filter(i => !state.removed.includes(i.id));
+    for (const item of items) {
+      const done = state.done.includes(item.id);
+      const el = document.createElement("article");
+      el.className = "idea" + (done ? " done" : "");
+      el.innerHTML = `
+        <span class="kind"></span>
+        <div class="text"></div>
+        <div class="actions">
+          <label><input type="checkbox"> hotovo</label>
+          <button class="del" type="button" aria-label="Smazat nápad" title="Smazat">×</button>
+        </div>`;
+      el.querySelector(".kind").textContent = item.kind || "Nápad";
+      el.querySelector(".text").textContent = item.text;
+      const cb = el.querySelector("input");
+      cb.checked = done;
+      cb.addEventListener("change", () => {
+        state.done = cb.checked ? [...state.done, item.id] : state.done.filter(id => id !== item.id);
+        save(); render();
+      });
+      el.querySelector(".del").addEventListener("click", () => {
+        if (!confirm("Smazat nápad „" + item.text + "“?")) return;
+        if (item.id.startsWith("s")) state.removed.push(item.id);
+        else state.added = state.added.filter(i => i.id !== item.id);
+        state.done = state.done.filter(id => id !== item.id);
+        save(); render();
+      });
+      list.insertBefore(el, form);
+    }
+  }
+
+  input.addEventListener("input", () => { submit.disabled = !input.value.trim(); });
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    state.added.push({ id: "u" + Date.now(), text });
+    save(); render();
+    input.value = ""; submit.disabled = true; input.focus();
+  });
+
+  render();
+</script>
 </body>
 </html>

@@ -157,6 +157,21 @@
   .t-pod .bars rect { animation: eq 1.4s ease-in-out infinite alternate; transform-origin: center; transform-box: fill-box; }
   @keyframes eq { from { transform: scaleY(.45); } to { transform: scaleY(1); } }
   @media (prefers-reduced-motion: reduce) { .t-pod .bars rect { animation: none; } }
+  /* hlavní odkaz překryje celou dlaždici, tlačítko Spotify leží nad ním */
+  .t-pod .main-link { color: inherit; text-decoration: none; }
+  .t-pod .main-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .t-pod .spotify {
+    position: relative; z-index: 2;
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 14px; padding: 7px 14px 7px 10px;
+    border-radius: 999px;
+    background: #121212; color: #fff;
+    font-size: 0.85rem; font-weight: 600; text-decoration: none;
+    transition: transform .15s ease;
+  }
+  .t-pod .spotify:hover { transform: scale(1.04); }
+  .t-pod .spotify svg { width: 18px; height: 18px; }
 
 
   /* --- Lukas University: akademická vínová + zlatá --- */
@@ -310,7 +325,7 @@
         <p>Přehled státních dluhopisů a jejich výnosů.</p>
       </a>
 
-      <a class="tile t-pod" href="https://jakubpechoucek-glitch.github.io/news-podcast/">
+      <div class="tile t-pod">
         <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
         <div class="art" aria-hidden="true">
           <svg viewBox="0 0 160 120">
@@ -328,9 +343,13 @@
             </g>
           </svg>
         </div>
-        <h3>Morning Briefing</h3>
+        <h3><a class="main-link" href="https://jakubpechoucek-glitch.github.io/news-podcast/">Morning Briefing</a></h3>
         <p>Automatický denní audio podcast o financích a geopolitice.</p>
-      </a>
+        <a class="spotify" href="https://open.spotify.com/show/2SYXEAofkGYrTRx9NTOHEx">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1ed760"/><path d="M6.5 9.2c3.6-1.1 7.8-.8 11 1M7 12.4c3-.9 6.3-.6 9 .9M7.6 15.4c2.4-.6 4.9-.4 7 .8" stroke="#121212" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+          Poslouchat na Spotify
+        </a>
+      </div>
 
     </div>
   </section>

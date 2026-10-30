@@ -125,6 +125,29 @@
   }
   .tip strong { font-weight: 600; }
 
+  /* jak pracuju s Claude Code */
+  .flow { list-style: none; margin: 0 0 16px; padding: 0; counter-reset: krok; display: grid; gap: 10px; }
+  .flow li {
+    counter-increment: krok;
+    position: relative;
+    background: var(--tile); border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px 18px 14px 58px;
+  }
+  .flow li::before {
+    content: counter(krok);
+    position: absolute; left: 16px; top: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--text); color: var(--bg);
+    font: 600 0.85rem/1 Inter, sans-serif;
+  }
+  .flow strong { display: block; margin-bottom: 2px; }
+  .flow p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+  .rules { background: var(--tile); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 6px; }
+  .rules h3 { margin: 0 0 8px; font-size: 1rem; }
+  .rules ul { margin: 0 0 10px; padding-left: 18px; font-size: 0.93rem; }
+  .rules li { margin-bottom: 6px; }
+
   footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; }
 </style>
 </head>
@@ -136,6 +159,7 @@
     Klidně se inspiruj. Kód veřejných projektů je na GitHubu a vznikal s pomocí AI asistenta Claude Code.</p>
 
   <nav class="toc" aria-label="Obsah">
+    <a href="#claude-code">Jak pracuju s Claude Code</a>
     <a href="#spolecne">Společné základy</a>
     <a href="#pudorysy" style="--c:var(--c-plan)">Půdorysy</a>
     <a href="#denik" style="--c:var(--c-diary)">Stavební deník</a>
@@ -148,6 +172,34 @@
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
     <a href="#rozcestnik" style="--c:var(--c-roz)">Rozcestník</a>
   </nav>
+
+  <!-- ============ CLAUDE CODE ============ -->
+  <h2 id="claude-code">Jak pracuju s Claude Code</h2>
+  <p>Programovat ručně nemusím. Všechny projekty tady vznikly v
+    <a href="https://claude.ai/code">Claude Code</a> – AI asistentovi, který dostane přístup k repozitáři na GitHubu,
+    sám píše a spouští kód a výsledek nahraje. Já říkám česky, co chci, a kontroluju, jestli to tak opravdu je.</p>
+  <ol class="flow">
+    <li><strong>Zadání obyčejnou řečí</strong>
+      <p>Popíšu, co mě trápí a co má aplikace dělat, třeba „chci místo Excelu s byty web, kde uvidím výnosy a konce nájmů“. Přiložím Excel nebo odkaz, ze kterého se má vycházet.</p></li>
+    <li><strong>Nejdřív dokumentace, pak kód</strong>
+      <p>U větších věcí nechám Clauda nejdřív rozebrat Excel, sepsat zadání, datový model, vzorce a otevřené otázky do složky <code>docs/</code>. Projdu to a rozhodnu sporné body. Teprve pak se staví (viz <a href="#byty">Byty</a> a <a href="#lukas">Lukas University</a>).</p></li>
+    <li><strong>Malé kroky a hned vidět výsledek</strong>
+      <p>Claude udělá změnu, sám si stránku otevře v prohlížeči, udělá screenshot a pustí testy. Já pak napíšu krátkou zpětnou vazbu: „tohle dej pryč“, „přidej odkaz na Spotify“, „vrať ten nápad zpátky“.</p></li>
+    <li><strong>Commit, push a nasazení</strong>
+      <p>Každý projekt má vlastní repozitář. Claude pracuje ve své větvi, popíše změnu v commitu a po odsouhlasení ji pošle do <code>main</code>. GitHub Pages nebo Render pak web nasadí samy.</p></li>
+    <li><strong>Průběh ve vlastním souboru</strong>
+      <p>Stav projektu, co je hotové a co zbývá, se vede přímo v repozitáři (<code>PROGRESS.md</code>, roadmapa). Další sezení pak naváže tam, kde to minulé skončilo.</p></li>
+  </ol>
+  <div class="rules">
+    <h3>Co se mi osvědčilo</h3>
+    <ul>
+      <li><strong>Říkat proč, ne jen co.</strong> Když Claude ví, k čemu to slouží, navrhne lepší řešení, než bych zadal.</li>
+      <li><strong>Kontrolovat výsledek, ne kód.</strong> Proklikám web na mobilu i počítači. Když něco nesedí, popíšu to a Claude dohledá příčinu.</li>
+      <li><strong>Osobní data nikdy do repozitáře.</strong> Repozitáře jsou veřejné, takže čísla žijí v databázi za přihlášením a ukázky běží na smyšlených datech (<code>?demo</code>).</li>
+      <li><strong>Jednoduchá technologie, dokud stačí.</strong> Většina projektů je statická stránka na GitHub Pages. Server přidávám, až když je opravdu potřeba.</li>
+      <li><strong>Claude i uvnitř aplikace.</strong> Morning Briefing volá Claude API každé ráno sám a z novinek napíše scénář podcastu.</li>
+    </ul>
+  </div>
 
   <!-- ============ SPOLEČNÉ ============ -->
   <h2 id="spolecne">Společné stavební kameny</h2>
@@ -255,6 +307,7 @@
     <header>
       <h3>Financování RD</h3>
       <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/assets_dashboard/?demo">Ukázka s demo daty</a>
         <a href="https://jakubpechoucek-glitch.github.io/assets_dashboard/">Web (přihlášení)</a>
       </div>
     </header>
@@ -273,6 +326,7 @@
         <ul>
           <li>Data se dál zapisují do Google tabulky, web si ji stáhne jako CSV (<code>/export?format=csv</code>)</li>
           <li>Repozitář je soukromý, web je za společným přihlášením rodiny</li>
+          <li>Režim <code>?demo</code> přeskočí přihlášení i Google tabulku a vykreslí smyšlenou stavbu</li>
         </ul>
       </div>
     </div>
@@ -317,6 +371,7 @@
     <header>
       <h3>Rodinné finance</h3>
       <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/finance/?demo">Ukázka s demo daty</a>
         <a href="https://jakubpechoucek-glitch.github.io/finance/">Web (přihlášení)</a>
         <a href="https://github.com/jakubpechoucek-glitch/finance">Kód</a>
       </div>
@@ -339,6 +394,7 @@
           <li>Stavy se ukládají v původní měně (CZK, EUR, GBP, PHP), přepočet se dělá kurzem daného měsíce</li>
           <li>Kurzy se načtou z ČNB k poslednímu dni měsíce, záložně z ECB</li>
           <li>Souhrny se počítají z uložených stavů, nic se nekopíruje mezi sloupci</li>
+          <li>V režimu <code>?demo</code> nahradí Supabase paměťový klient se stejným rozhraním, takže jde vyzkoušet i uzávěrka</li>
         </ul>
       </div>
     </div>
@@ -443,6 +499,7 @@
     <header>
       <h3>Lukas University</h3>
       <div class="links">
+        <a href="https://lukas-university.onrender.com/?demo">Ukázka s demo daty</a>
         <a href="https://lukas-university.onrender.com">Web (přihlášení)</a>
         <a href="https://github.com/jakubpechoucek-glitch/Lukas_university">Kód</a>
         <a href="https://github.com/jakubpechoucek-glitch/Lukas_university/tree/main/docs">Podrobná dokumentace</a>
@@ -467,6 +524,7 @@
           <li>Výpočty v <code>shared/calc</code> sdílí server i prohlížeč, takže vyjde vždy stejné číslo</li>
           <li>Účty se zakládají při startu z proměnných prostředí, heslo se mění při prvním přihlášení</li>
           <li>Databáze leží na trvalém disku Renderu</li>
+          <li>Ukázka <code>/?demo</code> odpovídá místo serveru z paměti prohlížeče (axios adapter), data generuje <code>tools/build-demo.js</code></li>
         </ul>
       </div>
     </div>

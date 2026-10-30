@@ -12,8 +12,8 @@
 (function () {
   "use strict";
 
-  const SUPABASE_URL = "";  // např. https://abcdefgh.supabase.co
-  const SUPABASE_KEY = "";  // Project Settings → API → anon / publishable key
+  const SUPABASE_URL = "https://unoefgbzymlwwehgzusf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_0slnWPDezyFgiOmUGDal4Q_B5ZGz7i_";  // veřejný publishable klíč
 
   const LOGIN_URL = "/rozcestnik/";
   // Přišel uživatel z e-mailového odkazu na obnovu hesla? (zjistit dřív,

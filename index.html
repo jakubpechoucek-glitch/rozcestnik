@@ -23,6 +23,8 @@
     --fx-bg: #0f1a17;    --fx-ink: #d8f3e7;    --fx-accent: #3ddc97;  --fx-down: #ff7a6b;
     --pod-from: #ff9a5a; --pod-to: #c2416b;    --pod-ink: #fff7f0;
     --uni-bg: #4a1626;   --uni-ink: #fbeaf0;   --uni-gold: #f2c45a;   --uni-ok: #7fd6a8;  --uni-no: #ff8f8f;
+    --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
+    --error: #b3261e;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -30,6 +32,7 @@
       --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
       --home-bg: #2b1d12;  --home-ink: #ffd2ad;
       --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
+      --error: #ff8a80;
     }
   }
   :root[data-theme="dark"] {
@@ -37,6 +40,7 @@
     --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
     --home-bg: #2b1d12;  --home-ink: #ffd2ad;
     --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
+    --error: #ff8a80;
   }
 
   * { box-sizing: border-box; }
@@ -52,7 +56,48 @@
     letter-spacing: -0.02em;
     margin: 0 0 8px;
   }
-  header p { color: var(--muted); margin: 0 0 40px; max-width: 46ch; }
+  header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 24px; flex-wrap: wrap; margin-bottom: 40px;
+  }
+  header p { color: var(--muted); margin: 0; max-width: 46ch; }
+
+  /* --- Přihlášení (společné pro všechny weby, viz auth.js) --- */
+  .ucet {
+    width: 320px; max-width: 100%;
+    padding: 16px; border-radius: 16px;
+    background: var(--tile); border: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 700px) { .ucet { width: 100%; } }
+  .ucet h2 { margin: 0 0 10px; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  .ucet form { display: grid; gap: 8px; }
+  .ucet input {
+    font: inherit; padding: 8px 10px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  }
+  .ucet .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ucet .primary {
+    border: 0; border-radius: 999px; padding: 8px 16px;
+    background: var(--text); color: var(--bg); font: 600 0.85rem Inter, sans-serif; cursor: pointer;
+  }
+  .ucet .primary:disabled { opacity: .4; cursor: default; }
+  .ucet .link { border: 0; background: none; padding: 0; color: var(--muted); font: inherit; font-size: 0.82rem; text-decoration: underline; cursor: pointer; }
+  .ucet .msg { margin: 0; font-size: 0.85rem; color: var(--muted); }
+  .ucet .msg.err { color: var(--error); }
+  .ucet .kdo { font-weight: 600; }
+  .ucet .google {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--text); font: 600 0.88rem Inter, sans-serif; cursor: pointer;
+  }
+  .ucet .google:hover { border-color: var(--muted); }
+  .ucet .google svg { width: 18px; height: 18px; }
+  .ucet .nebo { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.75rem; margin: 2px 0; }
+  .ucet .nebo::before, .ucet .nebo::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* chráněné dlaždice: zámek v pilulce */
+  .tile[data-chraneno] .pill::before { content: "🔒 "; }
 
   section { margin-bottom: 40px; }
   section > h2 {
@@ -179,6 +224,11 @@
   .t-uni h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
   .t-uni .pill { color: var(--uni-gold); }
 
+  /* --- Byty k pronájmu: noční fasády, svítí okna --- */
+  .t-byty { background: var(--byty-bg); color: var(--byty-ink); }
+  .t-byty h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-byty .pill { color: var(--byty-lit); }
+
   /* --- Backlog nápadů --- */
   .backlog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   @media (max-width: 900px) { .backlog { grid-template-columns: repeat(2, 1fr); } }
@@ -232,8 +282,11 @@
 <body>
 <main>
   <header>
-    <h1>Rozcestník</h1>
-    <p>Všechno, co jsem si nakódoval, na jednom místě — od stavby domu po kurzy měn.</p>
+    <div>
+      <h1>Rozcestník</h1>
+      <p>Všechno, co jsem si nakódoval, na jednom místě — od stavby domu po kurzy měn.</p>
+    </div>
+    <aside class="ucet" id="ucet" aria-live="polite"><p class="msg">Načítám…</p></aside>
   </header>
 
   <!-- ============ DŮM ============ -->
@@ -294,8 +347,8 @@
         <p>Záznamy z průběhu stavby den po dni.</p>
       </a>
 
-      <a class="tile t-home" href="https://jakubpechoucek-glitch.github.io/assets_dashboard/">
-        <div class="meta"><span class="pill">WEB</span><span class="go">otevřít →</span></div>
+      <a class="tile t-home" data-chraneno href="https://jakubpechoucek-glitch.github.io/assets_dashboard/">
+        <div class="meta"><span class="pill">WEB · přihlášení</span><span class="go">otevřít →</span></div>
         <div class="art" aria-hidden="true">
           <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
             <path d="M20 58 L68 20 L116 58"/>
@@ -312,6 +365,50 @@
         </div>
         <h3>Financování RD</h3>
         <p>Přehled financování rodinného domu Pěchoučkovi.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ NEMOVITOSTI ============ -->
+  <section>
+    <h2>Nemovitosti</h2>
+    <div class="grid">
+
+      <a class="tile t-byty wide" data-chraneno href="https://jakubpechoucek-glitch.github.io/bytykpronajmu/">
+        <div class="meta"><span class="pill">WEB · přihlášení</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 130" fill="none">
+            <path d="M0 126 H360" stroke="currentColor" stroke-opacity=".35" stroke-width="2"/>
+            <!-- pět domů = pět bytů -->
+            <g fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-opacity=".55" stroke-width="1.5">
+              <rect x="18"  y="22" width="62" height="104" rx="2"/>
+              <rect x="88"  y="48" width="54" height="78"  rx="2"/>
+              <rect x="150" y="10" width="66" height="116" rx="2"/>
+              <rect x="224" y="40" width="54" height="86"  rx="2"/>
+              <rect x="286" y="58" width="56" height="68"  rx="2"/>
+            </g>
+            <g fill="currentColor" fill-opacity=".22">
+              <rect x="28" y="34" width="12" height="10"/><rect x="58" y="34" width="12" height="10"/>
+              <rect x="28" y="56" width="12" height="10"/><rect x="28" y="78" width="12" height="10"/><rect x="58" y="78" width="12" height="10"/>
+              <rect x="98" y="60" width="12" height="10"/><rect x="98" y="82" width="12" height="10"/><rect x="120" y="82" width="12" height="10"/>
+              <rect x="162" y="22" width="12" height="10"/><rect x="190" y="22" width="12" height="10"/><rect x="162" y="66" width="12" height="10"/>
+              <rect x="190" y="88" width="12" height="10"/>
+              <rect x="234" y="52" width="12" height="10"/><rect x="256" y="74" width="12" height="10"/><rect x="234" y="96" width="12" height="10"/>
+              <rect x="296" y="70" width="12" height="10"/><rect x="320" y="92" width="12" height="10"/>
+            </g>
+            <!-- rozsvícená okna = pronajaté byty -->
+            <g fill="var(--byty-lit)">
+              <rect x="58" y="56" width="12" height="10"/>
+              <rect x="120" y="60" width="12" height="10"/>
+              <rect x="190" y="44" width="12" height="10"/><rect x="162" y="44" width="12" height="10"/><rect x="190" y="66" width="12" height="10"/>
+              <rect x="256" y="52" width="12" height="10"/>
+              <rect x="320" y="70" width="12" height="10"/><rect x="296" y="92" width="12" height="10"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Byty k pronájmu</h3>
+        <p>Karty bytů, historie pronájmů, nájemné a finance – hodnota, CAGR, yield, IRR a odpisy.</p>
       </a>
 
     </div>
@@ -460,6 +557,111 @@
 
   <footer>Nový projekt přidáš zkopírováním jedné dlaždice (<code>&lt;a class="tile …"&gt;</code>) do příslušné sekce v souboru index.html.</footer>
 </main>
+<script src="vendor/supabase-js-2.45.4.js"></script>
+<script src="auth.js"></script>
+<script>
+  // ---------------------------------------------------------- přihlášení
+  (function () {
+    const box = document.getElementById("ucet");
+    const A = window.RodinaAuth;
+    const next = A.bezpecnyNavrat(new URLSearchParams(location.search).get("next") || "");
+    const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+    let obnova = A.zOdkazuNaObnovu;
+
+    function formular(titulek, pole, tlacitko, odeslat, pod = "") {
+      box.innerHTML = `<h2>${titulek}</h2>
+        <form>${pole}
+          <div class="row"><button class="primary" type="submit">${tlacitko}</button>${pod}</div>
+          <p class="msg" hidden></p>
+        </form>`;
+      const form = box.querySelector("form"), msg = box.querySelector(".msg"), btn = form.querySelector(".primary");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        btn.disabled = true; msg.hidden = true;
+        try { await odeslat(new FormData(form), msg); }
+        catch (err) { msg.textContent = err.message || String(err); msg.className = "msg err"; msg.hidden = false; }
+        finally { btn.disabled = false; }
+      });
+      return box;
+    }
+
+    function prihlaseni() {
+      formular("Přihlášení",
+        `<input name="email" type="email" autocomplete="username" placeholder="E-mail" required>
+         <input name="heslo" type="password" autocomplete="current-password" placeholder="Heslo" required>`,
+        "Přihlásit",
+        async (f) => { await A.prihlasit(f.get("email"), f.get("heslo")); await vykresli(); },
+        `<button class="link" type="button" id="zapom">Zapomenuté heslo?</button>`);
+      box.querySelector("form").insertAdjacentHTML("afterbegin",
+        `<button class="google" type="button" id="google">
+           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.7z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.1-4 1.1-3.1 0-5.7-2.1-6.6-4.9h-4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.4 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.4 6.6l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>
+           Přihlásit přes Google
+         </button>
+         <div class="nebo">nebo e-mailem</div>`);
+      box.querySelector("#google").onclick = async () => {
+        try { await A.prihlasitGoogle(); }
+        catch (err) { const m = box.querySelector(".msg"); m.textContent = err.message; m.className = "msg err"; m.hidden = false; }
+      };
+      if (next) box.insertAdjacentHTML("beforeend", `<p class="msg" style="margin-top:8px">Pro pokračování se přihlas.</p>`);
+      box.querySelector("#zapom").onclick = zapomenute;
+    }
+
+    function zapomenute() {
+      formular("Obnova hesla",
+        `<input name="email" type="email" autocomplete="username" placeholder="E-mail" required>`,
+        "Poslat odkaz",
+        async (f, msg) => { await A.obnovaHesla(f.get("email")); msg.textContent = "Odkaz na nastavení hesla je v e-mailu."; msg.className = "msg"; msg.hidden = false; },
+        `<button class="link" type="button" id="zpet">Zpět</button>`);
+      box.querySelector("#zpet").onclick = prihlaseni;
+    }
+
+    function noveHeslo(zpet) {
+      formular("Nové heslo",
+        `<input name="h1" type="password" autocomplete="new-password" placeholder="Nové heslo (min. 8 znaků)" minlength="8" required>
+         <input name="h2" type="password" autocomplete="new-password" placeholder="Heslo znovu" required>`,
+        "Uložit heslo",
+        async (f, msg) => {
+          if (f.get("h1") !== f.get("h2")) throw new Error("Hesla se neshodují.");
+          await A.noveHeslo(f.get("h1"));
+          obnova = false;
+          await vykresli("Heslo je změněné.");
+        },
+        zpet ? `<button class="link" type="button" id="zpet">Zrušit</button>` : "");
+      if (zpet) box.querySelector("#zpet").onclick = () => vykresli();
+    }
+
+    async function vykresli(zprava) {
+      if (!A.nastaveno) {
+        box.innerHTML = `<h2>Přihlášení</h2><p class="msg">Zatím není nastavené (chybí připojení k Supabase v auth.js).</p>`;
+        return;
+      }
+      if (obnova) return noveHeslo(false);
+      const s = await A.stav();
+      if (!s.session) return prihlaseni();
+      if (!s.clen) {
+        box.innerHTML = `<h2>Účet</h2><p class="msg err">Účet ${esc(s.email)} není mezi členy rodiny.</p>
+          <div class="row" style="margin-top:8px"><button class="primary" id="odhl">Odhlásit</button></div>`;
+        box.querySelector("#odhl").onclick = A.odhlasit;
+        return;
+      }
+      if (next) { location.replace(next); return; }
+      box.innerHTML = `<h2>Účet</h2>
+        <p style="margin:0 0 10px">Přihlášen: <span class="kdo">${esc(s.jmeno)}</span></p>
+        ${zprava ? `<p class="msg" style="margin-bottom:10px">${esc(zprava)}</p>` : ""}
+        <div class="row"><button class="link" id="zmena">Změnit heslo</button><button class="primary" id="odhl">Odhlásit</button></div>`;
+      box.querySelector("#odhl").onclick = A.odhlasit;
+      box.querySelector("#zmena").onclick = () => noveHeslo(true);
+    }
+
+    if (A.client) {
+      // odkaz z e-mailu „obnova hesla" → nastavit nové heslo
+      A.client.auth.onAuthStateChange((ev) => {
+        if (ev === "PASSWORD_RECOVERY") { obnova = true; vykresli(); }
+      });
+    }
+    vykresli();
+  })();
+</script>
 <script>
   // Výchozí nápady. Nové trvale přidáš sem; ty z formuláře se ukládají do localStorage.
   const SEED = [
@@ -467,7 +669,6 @@
     { id: "s2", kind: "Auto", text: "Nové povinné ručení KIA" },
     { id: "s3", kind: "Prodej", text: "Prodej starého laptopu přes Marketplace" },
     { id: "s4", kind: "Finance", text: "Osobní finance / cash flow" },
-    { id: "s5", kind: "Nemovitosti", text: "Byty – přehled podobný Excelu" },
     { id: "s6", kind: "Investice", text: "Přehled investic" },
     { id: "s7", kind: "Cestování", text: "Přehled cestování po světě podle pasu" },
     { id: "s8", kind: "Knihy", text: "Přehled přečtených knížek + summary data" },

@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumentace projektů</title>
+<meta name="description" content="Jak jsou postavené moje projekty z Rozcestníku – technologie, data, hosting a tipy pro inspiraci.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f2ee;
+    --text: #1c1c1e;
+    --muted: #66656b;
+    --line: #dedad2;
+    --tile: #ffffff;
+    --chip: #ece9e2;
+    --link: #1f5fbf;
+
+    /* barvy projektů – stejné jako dlaždice na Rozcestníku */
+    --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
+    --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
+      --chip: #2a2a30; --link: #8ab4ff;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
+    --chip: #2a2a30; --link: #8ab4ff;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: 40px 16px 72px; }
+  a { color: var(--link); text-underline-offset: 3px; }
+  code {
+    font: 500 0.82em "JetBrains Mono", ui-monospace, monospace;
+    background: var(--chip); padding: 1px 5px; border-radius: 5px;
+    overflow-wrap: anywhere;
+  }
+
+  .back { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--muted); text-decoration: none; margin-bottom: 24px; }
+  .back:hover { color: var(--text); }
+  h1 {
+    font: 600 clamp(2rem, 5vw, 2.8rem)/1.1 Fraunces, Georgia, serif;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .lead { color: var(--muted); margin: 0 0 28px; max-width: 60ch; }
+
+  nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+  nav.toc a {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 5px 12px; border-radius: 999px;
+    background: var(--tile); border: 1px solid var(--line);
+    color: var(--text); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+  }
+  nav.toc a::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--muted)); }
+  nav.toc a:hover { border-color: var(--text); }
+
+  h2 {
+    font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted);
+    margin: 56px 0 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* společné stavební kameny */
+  .patterns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 640px) { .patterns { grid-template-columns: 1fr; } }
+  .pattern { background: var(--tile); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .pattern h3 { margin: 0 0 4px; font-size: 1rem; }
+  .pattern p { margin: 0; font-size: 0.92rem; color: var(--muted); }
+  .pattern .used { margin-top: 10px; font-size: 0.78rem; color: var(--muted); }
+
+  /* projekt */
+  .project {
+    position: relative;
+    background: var(--tile);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 22px 20px 26px;
+    margin-bottom: 16px;
+    scroll-margin-top: 16px;
+    overflow: hidden;
+  }
+  .project::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--c); }
+  .project header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .project h3 { margin: 0; font: 600 1.45rem/1.2 Fraunces, Georgia, serif; letter-spacing: -0.01em; }
+  .project .what { margin: 6px 0 14px; color: var(--muted); }
+  .links { display: flex; gap: 14px; font-size: 0.85rem; font-weight: 600; flex-wrap: wrap; }
+  .stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; padding: 0; list-style: none; }
+  .stack li {
+    font: 500 0.74rem/1 "JetBrains Mono", ui-monospace, monospace;
+    background: var(--chip); padding: 5px 8px; border-radius: 6px;
+  }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 28px; }
+  @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+  .cols h4 {
+    margin: 0 0 4px; font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+  }
+  .cols ul { margin: 0 0 14px; padding-left: 18px; font-size: 0.93rem; }
+  .cols li { margin-bottom: 3px; }
+  .tip {
+    margin-top: 4px; padding: 10px 14px; border-radius: 10px;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    font-size: 0.9rem;
+  }
+  .tip strong { font-weight: 600; }
+
+  footer { margin-top: 48px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="../">← Rozcestník</a>
+  <h1>Dokumentace projektů</h1>
+  <p class="lead">Jak jsou moje projekty postavené: technologie, kde leží data, kde běží a co se mi osvědčilo.
+    Klidně se inspiruj. Kód veřejných projektů je na GitHubu a vznikal s pomocí AI asistenta Claude Code.</p>
+
+  <nav class="toc" aria-label="Obsah">
+    <a href="#spolecne">Společné základy</a>
+    <a href="#pudorysy" style="--c:var(--c-plan)">Půdorysy</a>
+    <a href="#denik" style="--c:var(--c-diary)">Stavební deník</a>
+    <a href="#financovani" style="--c:var(--c-home)">Financování RD</a>
+    <a href="#byty" style="--c:var(--c-byty)">Byty k pronájmu</a>
+    <a href="#finance" style="--c:var(--c-fin)">Rodinné finance</a>
+    <a href="#kurzy" style="--c:var(--c-fx)">Směnné kurzy</a>
+    <a href="#dluhopisy" style="--c:var(--c-bond)">Státní dluhopisy</a>
+    <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
+    <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
+    <a href="#rozcestnik" style="--c:var(--c-roz)">Rozcestník</a>
+  </nav>
+
+  <!-- ============ SPOLEČNÉ ============ -->
+  <h2 id="spolecne">Společné stavební kameny</h2>
+  <div class="patterns">
+    <div class="pattern">
+      <h3>Statický web na GitHub Pages</h3>
+      <p>Jen HTML, CSS a JavaScript bez serveru a bez buildu. Hosting je zdarma, nasazení = push do <code>main</code>. Nejjednodušší cesta, jak dostat nápad na web.</p>
+      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Rozcestník</div>
+    </div>
+    <div class="pattern">
+      <h3>Supabase jako databáze a přihlášení</h3>
+      <p>Postgres v cloudu s přihlášením. Data chrání pravidla přímo v databázi (Row Level Security), takže kód i repozitář můžou být veřejné a data stejně uvidí jen členové rodiny.</p>
+      <div class="used">Byty, Rodinné finance, Rozcestník</div>
+    </div>
+    <div class="pattern">
+      <h3>Node aplikace na Renderu</h3>
+      <p>Když je potřeba vlastní backend (API, plánované úlohy, SQLite), běží aplikace na Renderu. Na free tarifu server po nečinnosti usne a první načtení trvá asi minutu.</p>
+      <div class="used">Směnné kurzy, Lukas University</div>
+    </div>
+    <div class="pattern">
+      <h3>Excel → aplikace</h3>
+      <p>Opakovaný postup: rozebrat původní Excel list po listu, sepsat datový model a vzorce, najít chyby v datech a teprve pak stavět. Excel poslouží k jednorázovému importu.</p>
+      <div class="used">Byty, Rodinné finance, Lukas University</div>
+    </div>
+    <div class="pattern">
+      <h3>Automatizace přes GitHub Actions</h3>
+      <p>Plánovaná úloha (cron) v repozitáři každé ráno něco vygeneruje, commitne výsledek a GitHub Pages ho rovnou zveřejní. Žádný vlastní server.</p>
+      <div class="used">Morning Briefing</div>
+    </div>
+    <div class="pattern">
+      <h3>Osobní data mimo git</h3>
+      <p>Repozitáře jsou veřejné, takže skutečná čísla, známky ani zdrojové Excely do nich nepatří. Data žijí v databázi, lokální kopie v ignorované složce, k ukázce slouží smyšlená demo data.</p>
+      <div class="used">Byty, Rodinné finance, Lukas University</div>
+    </div>
+  </div>
+
+  <!-- ============ PROJEKTY ============ -->
+  <h2>Projekty</h2>
+
+  <article class="project" id="pudorysy" style="--c:var(--c-plan)">
+    <header>
+      <h3>Půdorysy Cvrčovice</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/pudorysy-Cvrcovice/">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/pudorysy-Cvrcovice">Kód</a>
+      </div>
+    </header>
+    <p class="what">Interaktivní půdorysy nového domu. Každá věc ve stavbě (dveře, okno, svítidlo…) je klikací bod s detailem.</p>
+    <ul class="stack"><li>HTML/CSS</li><li>Vanilla JS</li><li>JSON data</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Dvě podlaží a střecha, přepínání pater</li>
+          <li>Vrstvy, které jde zapínat: dveře, okna a vrata, povrchy, nábytek a kuchyně, EZS a kamery, svítidla, FVE, stínění</li>
+          <li>Barvy podle stavu (OK / k ověření / k dořešení)</li>
+          <li>Na mobilu se detail otevře jako panel zespodu</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Obrázek půdorysu + body umístěné v pixelech obrázku</li>
+          <li>Každá vrstva = jeden soubor v <code>data/*.json</code>, přidat položku znamená upravit JSON</li>
+          <li>Průběh projektu se vede v <code>PROGRESS.md</code></li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> s parametrem <code>?edit</code> se zapne editor souřadnic. Klikneš do půdorysu a vypíšou se pixely pro nový bod, takže body nemusíš měřit ručně.</p>
+  </article>
+
+  <article class="project" id="denik" style="--c:var(--c-diary)">
+    <header>
+      <h3>Stavební deník</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/stavebnidennik/">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/stavebnidennik">Kód</a>
+      </div>
+    </header>
+    <p class="what">Zápisy z kontrolních dnů na stavbě a úkoly, které z nich vyplývají.</p>
+    <ul class="stack"><li>HTML/CSS</li><li>Vanilla JS</li><li>Firebase Firestore</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Kontrolní dny: kdo byl přítomen, průběh prací, změny</li>
+          <li>Úkoly s odpovědnou osobou a stavem, filtr podle lidí a rolí</li>
+          <li>Souhrnná tabulka a statistiky splněných úkolů</li>
+          <li>Přidání nového kontrolního dne a úprava úkolů přímo na webu</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Čtyři soubory: <code>index.html</code>, <code>style.css</code>, <code>app.js</code>, <code>data.js</code></li>
+          <li>Úvodní zápisy jsou v <code>data.js</code>, změny se ukládají do Firestore</li>
+          <li>Firebase se načítá přímo z CDN, nic se neinstaluje</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> pro malou aplikaci, kam má zapisovat víc lidí, je Firestore nejrychlejší start: databáze bez vlastního serveru jen se dvěma skripty z CDN.</p>
+  </article>
+
+  <article class="project" id="financovani" style="--c:var(--c-home)">
+    <header>
+      <h3>Financování RD</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/assets_dashboard/">Web (přihlášení)</a>
+      </div>
+    </header>
+    <p class="what">Dashboard výdajů na stavbu domu: měsíční výdaje, rozpad podle kategorií a poslední pohyby.</p>
+    <ul class="stack"><li>Jeden HTML soubor</li><li>Chart.js</li><li>Google Sheets</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Graf měsíčních výdajů a nákladů podle kategorií</li>
+          <li>Poslední pohyby a tabulka všech položek</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Data se dál zapisují do Google tabulky, web si ji stáhne jako CSV (<code>/export?format=csv</code>)</li>
+          <li>Repozitář je soukromý, web je za společným přihlášením rodiny</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> Google tabulka jako „databáze“ je ideální, když už data někdo v tabulce vede. Web jen kreslí grafy a nic se nepřepisuje.</p>
+  </article>
+
+  <article class="project" id="byty" style="--c:var(--c-byty)">
+    <header>
+      <h3>Byty k pronájmu</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/bytykpronajmu/?demo">Ukázka s demo daty</a>
+        <a href="https://github.com/jakubpechoucek-glitch/bytykpronajmu">Kód</a>
+        <a href="https://github.com/jakubpechoucek-glitch/bytykpronajmu/tree/main/docs">Podrobná dokumentace</a>
+      </div>
+    </header>
+    <p class="what">Evidence a finanční přehled investičních bytů. Nahradil Excel „Karty bytů“.</p>
+    <ul class="stack"><li>Vanilla JS</li><li>Supabase + RLS</li><li>Python import</li><li>Node testy</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Přehled portfolia: hodnota, nájmy, obsazenost, blížící se termíny (konec nájmu, konec fixace)</li>
+          <li>Detail bytu: historie pronájmů, hypotéka, odkazy, grafy</li>
+          <li>Finanční ukazatele: CAGR, yield nominální i reálný, IRR, daňové odpisy</li>
+          <li>Úpravy dat přímo na webu</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li><code>finance.js</code> obsahuje jen výpočty bez práce se stránkou, takže jde testovat (<code>node tools/test_finance.js</code>)</li>
+          <li><code>data.js</code> ukládá buď do Supabase, nebo do paměti v režimu <code>?demo</code></li>
+          <li>Excel se jednorázově převedl skriptem <code>tools/import_excel.py</code> na SQL</li>
+          <li>Osm dokumentů: zadání, rozbor Excelu, datový model, vzorce, nalezené chyby v datech</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> mobilní prohlížeče drží staré CSS a JS v mezipaměti. Pomůže přidat k odkazům verzi (<code>app.js?v=abc123</code>) a při každé změně ji zvýšit.</p>
+  </article>
+
+  <article class="project" id="finance" style="--c:var(--c-fin)">
+    <header>
+      <h3>Rodinné finance</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/finance/">Web (přihlášení)</a>
+        <a href="https://github.com/jakubpechoucek-glitch/finance">Kód</a>
+      </div>
+    </header>
+    <p class="what">Webová náhrada Excelu „aktiva a pasiva“: majetek, měsíční uzávěrka stavů účtů a investic, plán cash flow.</p>
+    <ul class="stack"><li>Vanilla JS</li><li>Supabase + RLS</li><li>Kurzy ČNB / ECB</li><li>Export .xlsx</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Čisté jmění a rozpad na nemovitosti, hotovost, investice a penzijko, graf vývoje</li>
+          <li>Uzávěrka měsíce na jedné obrazovce místo deseti ručních kroků v Excelu</li>
+          <li>Cash flow: plán proti skutečnosti po měsících</li>
+          <li>Export do Excelu, plná záloha do JSON a obnova ze zálohy</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Stavy se ukládají v původní měně (CZK, EUR, GBP, PHP), přepočet se dělá kurzem daného měsíce</li>
+          <li>Kurzy se načtou z ČNB k poslednímu dni měsíce, záložně z ECB</li>
+          <li>Souhrny se počítají z uložených stavů, nic se nekopíruje mezi sloupci</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> do políček jde psát výpočet jako v Excelu, třeba <code>7585+250537</code> nebo <code>20575*eur+80</code>. Opisování z výpisů je pak mnohem rychlejší.</p>
+  </article>
+
+  <article class="project" id="kurzy" style="--c:var(--c-fx)">
+    <header>
+      <h3>Směnné kurzy</h3>
+      <div class="links">
+        <a href="https://smenne-kurzy.onrender.com">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/smenne_kurzy">Kód</a>
+      </div>
+    </header>
+    <p class="what">Sledování kurzů CZK ↔ EUR, GBP, PHP, USD s historií za 12 měsíců, portfoliem a alarmy.</p>
+    <ul class="stack"><li>React + TypeScript</li><li>Vite</li><li>Tailwind</li><li>Recharts</li><li>Express</li><li>SQLite</li><li>Render</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Dashboard s aktuálními kurzy a hodnotou portfolia v Kč</li>
+          <li>Grafy vývoje kurzů za rok, převodník</li>
+          <li>Alarmy při dosažení cílového kurzu</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Frontend a backend v jednom repozitáři (<code>frontend/</code>, <code>backend/</code>)</li>
+          <li>Kurzy z <a href="https://www.frankfurter.app/">Frankfurter API</a>: zdarma, bez API klíče</li>
+          <li>Plánovač na serveru pravidelně stahuje kurzy a hlídá alarmy</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> Frankfurter je nejjednodušší zdroj kurzů ECB pro hobby projekty, protože nevyžaduje žádnou registraci.</p>
+  </article>
+
+  <article class="project" id="dluhopisy" style="--c:var(--c-bond)">
+    <header>
+      <h3>Státní dluhopisy</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/statni-dluhopisy/">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/statni-dluhopisy">Kód</a>
+      </div>
+    </header>
+    <p class="what">Kalkulačka výnosů Dluhopisu Republiky: srovnání fixního a protiinflačního dluhopisu podle scénáře inflace.</p>
+    <ul class="stack"><li>Jeden HTML soubor</li><li>React 18 z CDN</li><li>Babel v prohlížeči</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Výpočet výnosu fixního a protiinflačního dluhopisu</li>
+          <li>Volitelný scénář inflace, srovnání obou variant</li>
+          <li>Přepínání češtiny a angličtiny</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Celá aplikace je jediný soubor <code>index.html</code></li>
+          <li>React a Babel se načítají z unpkg, JSX se překládá až v prohlížeči, takže není potřeba žádný build</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> React bez buildu je skvělý na rychlý prototyp kalkulačky. Pro větší aplikaci se vyplatí Vite (viz Směnné kurzy).</p>
+  </article>
+
+  <article class="project" id="podcast" style="--c:var(--c-pod)">
+    <header>
+      <h3>Morning Briefing</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/news-podcast/">Web</a>
+        <a href="https://open.spotify.com/show/2SYXEAofkGYrTRx9NTOHEx">Spotify</a>
+        <a href="https://github.com/jakubpechoucek-glitch/news-podcast">Kód</a>
+      </div>
+    </header>
+    <p class="what">Automatický denní audio podcast (7–8 minut) o trzích, centrálních bankách, big techu a světových zprávách.</p>
+    <ul class="stack"><li>Python</li><li>RSS</li><li>Claude API</li><li>edge-tts</li><li>GitHub Actions</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Jak to funguje</h4>
+        <ul>
+          <li>Každé ráno se stáhnou zprávy z RSS kanálů a tržní čísla</li>
+          <li>Claude z nich napíše scénář epizody</li>
+          <li><code>edge-tts</code> ho namluví do mp3</li>
+          <li>Epizoda a <code>feed.xml</code> se commitnou do <code>docs/</code> a GitHub Pages je zveřejní jako podcast</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Jeden skript <code>scripts/generate_episode.py</code></li>
+          <li>Zdroje zpráv a tickery v <code>config/feeds.py</code>, délka segmentů v konstantách</li>
+          <li>Cron v <code>.github/workflows/daily-briefing.yml</code>, API klíč jako secret repozitáře</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> podcast je jen RSS soubor s odkazy na mp3. Když ho zveřejníš přes GitHub Pages, odebíráš ho v jakékoli podcastové aplikaci a hosting je zdarma.</p>
+  </article>
+
+  <article class="project" id="lukas" style="--c:var(--c-uni)">
+    <header>
+      <h3>Lukas University</h3>
+      <div class="links">
+        <a href="https://lukas-university.onrender.com">Web (přihlášení)</a>
+        <a href="https://github.com/jakubpechoucek-glitch/Lukas_university">Kód</a>
+        <a href="https://github.com/jakubpechoucek-glitch/Lukas_university/tree/main/docs">Podrobná dokumentace</a>
+      </div>
+    </header>
+    <p class="what">Výběr vysoké školy v Evropě podle oboru a predikce výsledků IB Diploma. Nahradil srovnávací Excel.</p>
+    <ul class="stack"><li>React</li><li>Vite</li><li>Tailwind</li><li>Express</li><li>SQLite</li><li>JWT</li><li>node:test</li><li>Render</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Katalog škol a programů pro čtyři obory</li>
+          <li>Predikce IB ve více scénářích, skóre do 45 bodů se počítá samo</li>
+          <li>U každého programu vyhodnotí, jestli požadavky splňuje ✅, je těsně pod ⚠️ nebo nesplňuje ❌</li>
+          <li>Vážený průměr známek z assessmentů pro každý předmět</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Backend ve vrstvách: routes → controllers → services → repositories</li>
+          <li>Výpočty v <code>shared/calc</code> sdílí server i prohlížeč, takže vyjde vždy stejné číslo</li>
+          <li>Účty se zakládají při startu z proměnných prostředí, heslo se mění při prvním přihlášení</li>
+          <li>Databáze leží na trvalém disku Renderu</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> SQLite na Renderu potřebuje <em>persistent disk</em>, jinak se databáze při každém nasazení smaže.</p>
+  </article>
+
+  <article class="project" id="rozcestnik" style="--c:var(--c-roz)">
+    <header>
+      <h3>Rozcestník</h3>
+      <div class="links">
+        <a href="../">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/rozcestnik">Kód</a>
+      </div>
+    </header>
+    <p class="what">Tahle stránka a úvodní rozcestí: odkazy na všechny projekty, backlog nápadů a společné přihlášení rodiny.</p>
+    <ul class="stack"><li>HTML/CSS</li><li>Inline SVG</li><li>Supabase Auth</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Dlaždice s vlastní SVG grafikou podle obsahu projektu, světlý i tmavý režim</li>
+          <li>Jedno přihlášení (e-mail nebo Google) pro všechny chráněné weby</li>
+          <li>Backlog nápadů s přidáváním a odškrtáváním</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Všechny weby běží na <code>jakubpechoucek-glitch.github.io</code>, sdílí tedy jeden origin a jedno uložené přihlášení</li>
+          <li>Chráněný web načte <code>/rozcestnik/auth.js</code> a zavolá <code>RodinaAuth.vyzadujPrihlaseni()</code></li>
+          <li>Členství ověřuje databáze (tabulka členů), ne stránka</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> veřejný „publishable“ klíč Supabase smí být v kódu. Bezpečnost zajišťují pravidla v databázi, ne utajený klíč.</p>
+  </article>
+
+  <footer>Nový projekt sem přidáš zkopírováním jednoho bloku <code>&lt;article class="project"&gt;</code> a odkazu v obsahu nahoře.</footer>
+</main>
+</body>
+</html>

@@ -235,6 +235,16 @@
   .t-fin h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
   .t-fin .pill { color: var(--fin-accent); }
 
+  /* --- Dokumentace: otevřená kniha s kódem --- */
+  .t-docs { background: var(--tile); color: var(--text); border-color: var(--line); }
+  .t-docs h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-docs .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+  .t-docs .chips span {
+    font: 500 0.7rem/1 "JetBrains Mono", ui-monospace, monospace;
+    padding: 4px 7px; border-radius: 6px;
+    background: color-mix(in srgb, var(--text) 8%, transparent);
+  }
+
   /* --- Backlog nápadů --- */
   .backlog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   @media (max-width: 900px) { .backlog { grid-template-columns: repeat(2, 1fr); } }
@@ -573,6 +583,54 @@
         </div>
         <h3>Lukas University</h3>
         <p>Výběr vysoké školy podle predikce IB – katalog programů, scénáře známek a vážené průměry.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ DOKUMENTACE ============ -->
+  <section>
+    <h2>Pro inspiraci</h2>
+    <div class="grid">
+
+      <a class="tile t-docs wide" href="dokumentace/">
+        <div class="meta"><span class="pill">DOKUMENTACE</span><span class="go">číst →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- otevřená kniha -->
+            <path d="M180 22 C150 10, 110 10, 80 18 V104 C110 96, 150 96, 180 108 Z" fill="currentColor" fill-opacity=".05" stroke="currentColor" stroke-width="2"/>
+            <path d="M180 22 C210 10, 250 10, 280 18 V104 C250 96, 210 96, 180 108 Z" fill="currentColor" fill-opacity=".05" stroke="currentColor" stroke-width="2"/>
+            <!-- levá strana: text -->
+            <g stroke="currentColor" stroke-width="2.4" opacity=".45">
+              <path d="M98 34 H162 M98 46 H156 M98 58 H162 M98 70 H140 M98 82 H158"/>
+            </g>
+            <!-- pravá strana: kód -->
+            <g font-family="JetBrains Mono, monospace" font-size="11" fill="currentColor">
+              <text x="196" y="38" fill="var(--bond-accent)">&lt;/&gt;</text>
+              <text x="196" y="56" opacity=".6">fetch(…)</text>
+              <text x="204" y="72" opacity=".6">.then(…)</text>
+              <text x="196" y="88" fill="var(--home-accent)">deploy ✓</text>
+            </g>
+            <!-- záložka -->
+            <path d="M258 14 V36 L264 31 L270 36 V14" fill="var(--pod-to)" stroke="none"/>
+            <!-- odkazy na projekty -->
+            <g>
+              <circle cx="36" cy="40" r="6" fill="var(--plan-bg)"/>
+              <circle cx="36" cy="62" r="6" fill="var(--fx-accent)"/>
+              <circle cx="36" cy="84" r="6" fill="var(--uni-gold)"/>
+              <path d="M44 40 Q62 40 78 52 M44 62 H78 M44 84 Q62 84 78 72" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 4" opacity=".4"/>
+              <circle cx="324" cy="40" r="6" fill="var(--pod-from)"/>
+              <circle cx="324" cy="62" r="6" fill="var(--diary-hazard)"/>
+              <circle cx="324" cy="84" r="6" fill="var(--fin-bg)"/>
+              <path d="M316 40 Q298 40 282 52 M316 62 H282 M316 84 Q298 84 282 72" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 4" opacity=".4"/>
+            </g>
+          </svg>
+        </div>
+        <div class="chips" aria-hidden="true">
+          <span>GitHub Pages</span><span>Supabase</span><span>React</span><span>Render</span><span>GitHub Actions</span><span>Claude API</span>
+        </div>
+        <h3>Jak je to postavené</h3>
+        <p>Dokumentace všech projektů: technologie, kde leží data, kde běží a tipy, které se osvědčily. Pro každého, kdo se chce inspirovat.</p>
       </a>
 
     </div>

@@ -62,6 +62,27 @@
   }
   .lead { color: var(--muted); margin: 0 0 28px; max-width: 60ch; }
 
+  /* rychlé odkazy na části stránky */
+  .quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 20px; padding: 0; list-style: none; }
+  @media (max-width: 760px) { .quick { grid-template-columns: repeat(2, 1fr); } }
+  .quick a {
+    display: flex; flex-direction: column; gap: 10px; height: 100%;
+    padding: 16px; border-radius: 14px;
+    background: var(--tile); border: 1px solid var(--line);
+    color: var(--text); text-decoration: none;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .quick a:hover, .quick a:focus-visible { transform: translateY(-2px); border-color: var(--q); }
+  .quick .ico {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: grid; place-items: center;
+    background: color-mix(in srgb, var(--q) 16%, transparent); color: var(--q);
+  }
+  .quick .ico svg { width: 22px; height: 22px; }
+  .quick strong { font-size: 0.98rem; line-height: 1.25; }
+  .quick span.sub { font-size: 0.8rem; color: var(--muted); margin-top: -6px; }
+  @media (prefers-reduced-motion: reduce) { .quick a { transition: none; } }
+
   nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
   nav.toc a {
     display: inline-flex; align-items: center; gap: 7px;
@@ -80,6 +101,7 @@
     display: flex; align-items: center; gap: 12px;
   }
   h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  h2[id], .rules { scroll-margin-top: 16px; }
 
   /* společné stavební kameny */
   .patterns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -158,9 +180,22 @@
   <p class="lead">Jak jsou moje projekty postavené: technologie, kde leží data, kde běží a co se mi osvědčilo.
     Klidně se inspiruj. Kód veřejných projektů je na GitHubu a vznikal s pomocí AI asistenta Claude Code.</p>
 
-  <nav class="toc" aria-label="Obsah">
-    <a href="#claude-code">Jak pracuju s Claude Code</a>
-    <a href="#spolecne">Společné základy</a>
+  <ul class="quick" aria-label="Rychlé odkazy">
+    <li><a href="#claude-code" style="--q:#d97757">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9 10l-2 2 2 2M15 10l2 2-2 2"/></svg></span>
+      <strong>Jak pracuju s Claude Code</strong><span class="sub">5 kroků od zadání k webu</span></a></li>
+    <li><a href="#osvedcilo" style="--q:#c8902e">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/></svg></span>
+      <strong>Co se mi osvědčilo</strong><span class="sub">5 tipů pro práci s AI</span></a></li>
+    <li><a href="#spolecne" style="--q:#1f7a5c">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><rect x="8" y="3" width="8" height="8" rx="1.5"/></svg></span>
+      <strong>Stavební kameny</strong><span class="sub">6 postupů, které se opakují</span></a></li>
+    <li><a href="#projekty" style="--q:#2a78d6">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+      <strong>Projekty</strong><span class="sub">10 projektů do detailu</span></a></li>
+  </ul>
+
+  <nav class="toc" aria-label="Projekty">
     <a href="#pudorysy" style="--c:var(--c-plan)">Půdorysy</a>
     <a href="#denik" style="--c:var(--c-diary)">Stavební deník</a>
     <a href="#financovani" style="--c:var(--c-home)">Financování RD</a>
@@ -190,7 +225,7 @@
     <li><strong>Průběh ve vlastním souboru</strong>
       <p>Stav projektu, co je hotové a co zbývá, se vede přímo v repozitáři (<code>PROGRESS.md</code>, roadmapa). Další sezení pak naváže tam, kde to minulé skončilo.</p></li>
   </ol>
-  <div class="rules">
+  <div class="rules" id="osvedcilo">
     <h3>Co se mi osvědčilo</h3>
     <ul>
       <li><strong>Říkat proč, ne jen co.</strong> Když Claude ví, k čemu to slouží, navrhne lepší řešení, než bych zadal.</li>
@@ -237,7 +272,7 @@
   </div>
 
   <!-- ============ PROJEKTY ============ -->
-  <h2>Projekty</h2>
+  <h2 id="projekty">Projekty</h2>
 
   <article class="project" id="pudorysy" style="--c:var(--c-plan)">
     <header>

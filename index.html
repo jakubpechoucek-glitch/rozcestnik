@@ -24,6 +24,7 @@
     --pod-from: #ff9a5a; --pod-to: #c2416b;    --pod-ink: #fff7f0;
     --uni-bg: #4a1626;   --uni-ink: #fbeaf0;   --uni-gold: #f2c45a;   --uni-ok: #7fd6a8;  --uni-no: #ff8f8f;
     --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
+    --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
     --error: #b3261e;
   }
   @media (prefers-color-scheme: dark) {
@@ -229,6 +230,11 @@
   .t-byty h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
   .t-byty .pill { color: var(--byty-lit); }
 
+  /* --- Rodinné finance: účetní kniha, zelená --- */
+  .t-fin { background: var(--fin-bg); color: var(--fin-ink); }
+  .t-fin h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-fin .pill { color: var(--fin-accent); }
+
   /* --- Backlog nápadů --- */
   .backlog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   @media (max-width: 900px) { .backlog { grid-template-columns: repeat(2, 1fr); } }
@@ -418,6 +424,36 @@
   <section>
     <h2>Peníze a trhy</h2>
     <div class="grid">
+
+      <a class="tile t-fin wide" data-chraneno href="https://jakubpechoucek-glitch.github.io/finance/">
+        <div class="meta"><span class="pill">WEB · přihlášení</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke="currentColor" stroke-opacity=".14" stroke-width="1">
+              <path d="M0 30 H360 M0 60 H360 M0 90 H360"/>
+            </g>
+            <!-- skládané sloupce majetku -->
+            <g>
+              <rect x="20"  y="70" width="26" height="40" rx="2" fill="currentColor" fill-opacity=".85"/>
+              <rect x="20"  y="56" width="26" height="12" fill="var(--fin-accent)"/>
+              <rect x="66"  y="66" width="26" height="44" rx="2" fill="currentColor" fill-opacity=".85"/>
+              <rect x="66"  y="50" width="26" height="14" fill="var(--fin-accent)"/>
+              <rect x="112" y="62" width="26" height="48" rx="2" fill="currentColor" fill-opacity=".85"/>
+              <rect x="112" y="46" width="26" height="14" fill="var(--fin-accent)"/>
+              <rect x="158" y="56" width="26" height="54" rx="2" fill="currentColor" fill-opacity=".85"/>
+              <rect x="158" y="38" width="26" height="16" fill="var(--fin-accent)"/>
+              <rect x="204" y="52" width="26" height="58" rx="2" fill="currentColor" fill-opacity=".85"/>
+              <rect x="204" y="32" width="26" height="18" fill="var(--fin-accent)"/>
+            </g>
+            <!-- odškrtnutá uzávěrka -->
+            <rect x="256" y="22" width="84" height="88" rx="8" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M270 44 l6 6 l12 -12 M296 44 H326 M270 68 l6 6 l12 -12 M296 68 H326 M270 92 H288 M296 92 H326" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M270 44 l6 6 l12 -12 M270 68 l6 6 l12 -12" stroke="var(--fin-accent)" stroke-width="3"/>
+          </svg>
+        </div>
+        <h3>Rodinné finance</h3>
+        <p>Majetek, stavy účtů a cash flow. Měsíční uzávěrka na jedné obrazovce, export do Excelu.</p>
+      </a>
 
       <a class="tile t-fx wide" href="https://smenne-kurzy.onrender.com">
         <div class="meta"><span class="pill">APLIKACE · start ~1 min</span><span class="go">otevřít →</span></div>
@@ -668,8 +704,6 @@
     { id: "s1", kind: "Pojištění", text: "Pojištění Chabry II a Brandýs" },
     { id: "s2", kind: "Auto", text: "Nové povinné ručení KIA" },
     { id: "s3", kind: "Prodej", text: "Prodej starého laptopu přes Marketplace" },
-    { id: "s4", kind: "Finance", text: "Osobní finance / cash flow" },
-    { id: "s6", kind: "Investice", text: "Přehled investic" },
     { id: "s7", kind: "Cestování", text: "Přehled cestování po světě podle pasu" },
     { id: "s8", kind: "Knihy", text: "Přehled přečtených knížek + summary data" },
   ];

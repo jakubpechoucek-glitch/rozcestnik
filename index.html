@@ -23,6 +23,7 @@
     --fx-bg: #0f1a17;    --fx-ink: #d8f3e7;    --fx-accent: #3ddc97;  --fx-down: #ff7a6b;
     --pod-from: #ff9a5a; --pod-to: #c2416b;    --pod-ink: #fff7f0;
     --uni-bg: #4a1626;   --uni-ink: #fbeaf0;   --uni-gold: #f2c45a;   --uni-ok: #7fd6a8;  --uni-no: #ff8f8f;
+    --math-bg: #26245c;  --math-ink: #ecebff;  --math-gold: #f2b45a;  --math-ok: #7fd6a8;
     --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
     --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
     --error: #b3261e;
@@ -224,6 +225,18 @@
   .t-uni { background: var(--uni-bg); color: var(--uni-ink); }
   .t-uni h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
   .t-uni .pill { color: var(--uni-gold); }
+
+  /* --- Math Practice: inkoustová fialová, čtverečkovaný sešit, 7 dní cesty --- */
+  .t-math {
+    background-color: var(--math-bg);
+    background-image:
+      linear-gradient(rgba(236,235,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(236,235,255,.06) 1px, transparent 1px);
+    background-size: 16px 16px;
+    color: var(--math-ink);
+  }
+  .t-math h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-math .pill { color: var(--math-gold); }
 
   /* --- Byty k pronájmu: noční fasády, svítí okna --- */
   .t-byty { background: var(--byty-bg); color: var(--byty-ink); }
@@ -583,6 +596,35 @@
         </div>
         <h3>Lukas University</h3>
         <p>Výběr vysoké školy podle predikce IB – katalog programů, scénáře známek a vážené průměry.</p>
+      </a>
+
+      <a class="tile t-math wide" href="https://jakubpechoucek-glitch.github.io/mathpractise/">
+        <div class="meta"><span class="pill">WEB · 7 dní</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- příklad a odpověď s kontrolou -->
+            <g font-family="Fraunces, Georgia, serif" font-size="22" fill="currentColor">
+              <text x="14" y="40">log<tspan font-size="13" dy="6">3</tspan><tspan dy="-6"> x = 2</tspan></text>
+            </g>
+            <rect x="14" y="54" width="98" height="30" rx="8" fill="currentColor" fill-opacity=".1"/>
+            <text x="26" y="75" fill="currentColor" font-family="JetBrains Mono, monospace" font-size="15">x = 9</text>
+            <circle cx="96" cy="69" r="8" fill="var(--math-ok)"/>
+            <path d="M92 69 l3 3 l5 -6" stroke="var(--math-bg)" stroke-width="2"/>
+            <!-- cesta 7 kol: hotová, aktuální, zamčená -->
+            <path d="M150 92 C 180 92 180 40 210 40 S 250 92 280 92 S 320 40 344 40" stroke="currentColor" stroke-opacity=".25" stroke-width="2" stroke-dasharray="3 5"/>
+            <g font-family="Inter, sans-serif" font-size="10" font-weight="600" text-anchor="middle">
+              <circle cx="150" cy="92" r="11" fill="var(--math-ink)"/><path d="M145 92 l3.5 3.5 l6 -7" stroke="var(--math-bg)" stroke-width="2"/>
+              <circle cx="181" cy="66" r="11" fill="var(--math-ink)"/><path d="M176 66 l3.5 3.5 l6 -7" stroke="var(--math-bg)" stroke-width="2"/>
+              <circle cx="210" cy="40" r="13" fill="var(--math-gold)"/><text x="210" y="44" fill="var(--math-bg)" font-size="12">3</text>
+              <circle cx="246" cy="66" r="11" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><text x="246" y="70" fill="currentColor" fill-opacity=".5">4</text>
+              <circle cx="280" cy="92" r="11" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><text x="280" y="96" fill="currentColor" fill-opacity=".5">5</text>
+              <circle cx="313" cy="66" r="11" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><text x="313" y="70" fill="currentColor" fill-opacity=".5">6</text>
+              <circle cx="344" cy="40" r="11" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><text x="344" y="44" fill="currentColor" fill-opacity=".5">7</text>
+            </g>
+          </svg>
+        </div>
+        <h3>Math Practice</h3>
+        <p>Lukášova příprava na assessment: exponenty a logaritmy v 7 kolech, další se odemkne po dokončení předchozího.</p>
       </a>
 
     </div>

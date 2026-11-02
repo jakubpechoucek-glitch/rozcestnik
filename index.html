@@ -548,7 +548,7 @@
     <h2>Vzdělání</h2>
     <div class="grid">
 
-      <a class="tile t-uni wide" href="https://lukas-university.onrender.com">
+      <a class="tile t-uni wide" data-sso="lukas" href="https://lukas-university.onrender.com">
         <div class="meta"><span class="pill">APLIKACE · přihlášení</span><span class="go">otevřít →</span></div>
         <div class="art" aria-hidden="true">
           <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -659,6 +659,9 @@
     const box = document.getElementById("ucet");
     const A = window.RodinaAuth;
     const next = A.bezpecnyNavrat(new URLSearchParams(location.search).get("next") || "");
+    // ?sso=lukas – web na jiné doméně chce přihlášení; po přihlášení ho tam pošleme zpět
+    const sso = new URLSearchParams(location.search).get("sso");
+    const ssoCil = sso && A.SSO_CILE && A.SSO_CILE[sso] ? sso : null;
     const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
     let obnova = A.zOdkazuNaObnovu;
 
@@ -696,7 +699,7 @@
         try { await A.prihlasitGoogle(); }
         catch (err) { const m = box.querySelector(".msg"); m.textContent = err.message; m.className = "msg err"; m.hidden = false; }
       };
-      if (next) box.insertAdjacentHTML("beforeend", `<p class="msg" style="margin-top:8px">Pro pokračování se přihlas.</p>`);
+      if (next || ssoCil) box.insertAdjacentHTML("beforeend", `<p class="msg" style="margin-top:8px">Pro pokračování se přihlas.</p>`);
       box.querySelector("#zapom").onclick = zapomenute;
     }
 
@@ -739,6 +742,10 @@
         return;
       }
       if (next) { location.replace(next); return; }
+      if (ssoCil) {
+        const url = await A.odkazSPrihlasenim(ssoCil);
+        if (url) { location.replace(url); return; }
+      }
       box.innerHTML = `<h2>Účet</h2>
         <p style="margin:0 0 10px">Přihlášen: <span class="kdo">${esc(s.jmeno)}</span></p>
         ${zprava ? `<p class="msg" style="margin-bottom:10px">${esc(zprava)}</p>` : ""}
@@ -754,6 +761,21 @@
       });
     }
     vykresli();
+
+    // Dlaždice webů na jiné doméně: kliknutí předá přihlášení (token v #sso=…).
+    // Nepřihlášený prostě odejde na web, který si o přihlášení řekne sám.
+    document.querySelectorAll("a[data-sso]").forEach((a) => {
+      a.addEventListener("click", async (e) => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        const novyTab = e.ctrlKey || e.metaKey || e.shiftKey || a.target === "_blank";
+        const okno = novyTab ? window.open("", "_blank") : null;
+        let url = a.href;
+        try { url = (await A.odkazSPrihlasenim(a.dataset.sso)) || a.href; } catch (err) {}
+        if (okno) { okno.opener = null; okno.location.href = url; }
+        else location.href = url;
+      });
+    });
   })();
 </script>
 <script>

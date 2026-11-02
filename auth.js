@@ -74,6 +74,22 @@
     }
   }
 
+  // Weby na jiné doméně (nevidí náš localStorage), kterým smíme předat
+  // přihlášení. Jen tyto pevné adresy – token nikdy nepošleme jinam.
+  const SSO_CILE = {
+    lukas: "https://lukas-university.onrender.com/",
+  };
+
+  // Adresa cílového webu s aktuálním přístupovým tokenem v části za #
+  // (cíl si ho ověří u Supabase a z adresy ho hned smaže). Bez přihlášení null.
+  async function odkazSPrihlasenim(cil) {
+    const url = SSO_CILE[cil];
+    if (!url || !client) return null;
+    const { data } = await client.auth.getSession();
+    const token = data.session?.access_token;
+    return token ? url + "#sso=" + encodeURIComponent(token) : null;
+  }
+
   const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
   // Celostránkové hlášení místo obsahu (nenastaveno / bez oprávnění)
@@ -113,5 +129,6 @@
   window.RodinaAuth = {
     client, nastaveno, LOGIN_URL, zOdkazuNaObnovu,
     stav, prihlasit, prihlasitGoogle, odhlasit, obnovaHesla, noveHeslo, bezpecnyNavrat, vyzadujPrihlaseni,
+    SSO_CILE, odkazSPrihlasenim,
   };
 })();

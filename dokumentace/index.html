@@ -21,19 +21,19 @@
     /* barvy projektů – stejné jako dlaždice na Rozcestníku */
     --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
     --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
-    --c-uni: #7a2440;  --c-roz: #1c1c1e;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
       --chip: #2a2a30; --link: #8ab4ff;
-      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff;
     }
   }
   :root[data-theme="dark"] {
     --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
     --chip: #2a2a30; --link: #8ab4ff;
-    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff;
   }
 
   * { box-sizing: border-box; }
@@ -192,7 +192,7 @@
       <strong>Stavební kameny</strong><span class="sub">6 postupů, které se opakují</span></a></li>
     <li><a href="#projekty" style="--q:#2a78d6">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-      <strong>Projekty</strong><span class="sub">10 projektů do detailu</span></a></li>
+      <strong>Projekty</strong><span class="sub">11 projektů do detailu</span></a></li>
   </ul>
 
   <nav class="toc" aria-label="Projekty">
@@ -205,6 +205,7 @@
     <a href="#dluhopisy" style="--c:var(--c-bond)">Státní dluhopisy</a>
     <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
+    <a href="#math" style="--c:var(--c-math)">Math Practice</a>
     <a href="#rozcestnik" style="--c:var(--c-roz)">Rozcestník</a>
   </nav>
 
@@ -564,6 +565,40 @@
       </div>
     </div>
     <p class="tip"><strong>Tip:</strong> SQLite na Renderu potřebuje <em>persistent disk</em>, jinak se databáze při každém nasazení smaže.</p>
+  </article>
+
+  <article class="project" id="math" style="--c:var(--c-math)">
+    <header>
+      <h3>Math Practice</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/mathpractise/">Web</a>
+        <a href="https://github.com/jakubpechoucek-glitch/mathpractise">Kód</a>
+        <a href="https://github.com/jakubpechoucek-glitch/mathpractise/blob/main/docs/navrh.md">Návrh a ověřování výsledků</a>
+      </div>
+    </header>
+    <p class="what">Příprava na assessment z matematiky (IB AA SL, exponenty a logaritmy). 102 příkladů z pěti PDF rozdělených do 7 kol, jedno kolo na den.</p>
+    <ul class="stack"><li>Vanilla JS</li><li>KaTeX</li><li>Vlastní parser výrazů</li><li>localStorage</li><li>node testy</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Další kolo se odemkne, až je to předchozí dokončené. Poslední kolo je zkouška nanečisto podle loňského testu</li>
+          <li>Odpověď se zkontroluje hned: 3 pokusy, nápověda, řešení i s grafem</li>
+          <li>Úlohy, které napoprvé nevyšly, jdou kdykoli procvičit znovu</li>
+          <li>Náčrty grafů a důkazy se dělají na papír a pak se porovnávají s řešením</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Úlohy jsou data v <code>data/kola.js</code> se zadáním v LaTeXu a typem odpovědi</li>
+          <li><code>checker.js</code> přečte zápis jako na kalkulačce (<code>2√3</code>, <code>log_3(x-4)</code>, <code>10e</code>) a výraz ověří dosazením, takže projde jakýkoli správný tvar</li>
+          <li>Číselné výsledky se uznají přesně i zaokrouhlené na 3 platné číslice (standard IB)</li>
+          <li>Test porovná výsledky s markscheme. Ukázalo se tak, že tři řešení ve školních slidech byla chybně</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> na tabletu je psaní vzorců otravné. Pomohlo ptát se na „kontrolní číslo“ místo celého vzorce (např. jen <em>N</em> v „zapiš jako log N“) a pod políčko dát živý náhled „rozumím tomu jako…“.</p>
   </article>
 
   <article class="project" id="rozcestnik" style="--c:var(--c-roz)">

@@ -26,6 +26,7 @@
     --math-bg: #26245c;  --math-ink: #ecebff;  --math-gold: #f2b45a;  --math-ok: #7fd6a8;
     --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
     --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
+    --plnv-bg: #0e4a4c;  --plnv-ink: #e3f6f4;  --plnv-sun: #ffb347;
     --error: #b3261e;
   }
   @media (prefers-color-scheme: dark) {
@@ -220,6 +221,11 @@
   .t-pod .spotify:hover { transform: scale(1.04); }
   .t-pod .spotify svg { width: 18px; height: 18px; }
 
+
+  /* --- Plánovač: tropická tyrkysová, pruhy volna, slunce --- */
+  .t-plnv { background: var(--plnv-bg); color: var(--plnv-ink); }
+  .t-plnv h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-plnv .pill { color: var(--plnv-sun); }
 
   /* --- Lukas University: akademická vínová + zlatá --- */
   .t-uni { background: var(--uni-bg); color: var(--uni-ink); }
@@ -552,6 +558,47 @@
           Poslouchat na Spotify
         </a>
       </div>
+
+    </div>
+  </section>
+
+  <!-- ============ RODINA ============ -->
+  <section>
+    <h2>Rodina</h2>
+    <div class="grid">
+
+      <a class="tile t-plnv wide" data-chraneno href="https://jakubpechoucek-glitch.github.io/Planovac/">
+        <div class="meta"><span class="pill">WEB · přihlášení</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round">
+            <!-- čtyři řádky volna (Jana, Jakub, Lukáš, Matěj) -->
+            <g stroke-width="9">
+              <path d="M14 22 H300" stroke="currentColor" stroke-opacity=".12"/>
+              <path d="M14 46 H300" stroke="currentColor" stroke-opacity=".12"/>
+              <path d="M14 70 H300" stroke="currentColor" stroke-opacity=".12"/>
+              <path d="M14 94 H300" stroke="currentColor" stroke-opacity=".12"/>
+              <path d="M150 22 H186" stroke="#f472b6"/>
+              <path d="M110 46 H300" stroke="#22d3ee"/>
+              <path d="M40 70 H70 M128 70 H210" stroke="#60a5fa"/>
+              <path d="M140 94 H250" stroke="#a78bfa"/>
+            </g>
+            <!-- společné okno -->
+            <rect x="144" y="10" width="48" height="96" rx="8" stroke="var(--plnv-sun)" stroke-width="2.4" stroke-dasharray="5 4"/>
+            <!-- slunce -->
+            <g transform="translate(334 30)" stroke="var(--plnv-sun)" stroke-width="2.4">
+              <circle r="9" fill="var(--plnv-sun)"/>
+              <path d="M0 -17 V-14 M0 14 V17 M-17 0 H-14 M14 0 H17 M-12 -12 l2 2 M10 10 l2 2 M-12 12 l2 -2 M10 -10 l2 -2"/>
+            </g>
+            <!-- hvězdičky hlasování -->
+            <g fill="var(--plnv-sun)" transform="translate(316 84)">
+              <path d="M0 -7 L2 -2 L7 -2 L3 1 L4.5 6 L0 3 L-4.5 6 L-3 1 L-7 -2 L-2 -2 Z"/>
+              <path transform="translate(17 0)" d="M0 -7 L2 -2 L7 -2 L3 1 L4.5 6 L0 3 L-4.5 6 L-3 1 L-7 -2 L-2 -2 Z" fill-opacity=".45"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Plánovač</h3>
+        <p>Kdo má kdy volno – ISM, UCL, Janina dovolená a filipínské svátky. Společná volna a hlasování, kam vyrazit po Asii.</p>
+      </a>
 
     </div>
   </section>

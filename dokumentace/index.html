@@ -21,19 +21,19 @@
     /* barvy projektů – stejné jako dlaždice na Rozcestníku */
     --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
     --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
-    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
       --chip: #2a2a30; --link: #8ab4ff;
-      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5;
     }
   }
   :root[data-theme="dark"] {
     --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
     --chip: #2a2a30; --link: #8ab4ff;
-    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5;
   }
 
   * { box-sizing: border-box; }
@@ -192,7 +192,7 @@
       <strong>Stavební kameny</strong><span class="sub">6 postupů, které se opakují</span></a></li>
     <li><a href="#projekty" style="--q:#2a78d6">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-      <strong>Projekty</strong><span class="sub">11 projektů do detailu</span></a></li>
+      <strong>Projekty</strong><span class="sub">12 projektů do detailu</span></a></li>
   </ul>
 
   <nav class="toc" aria-label="Projekty">
@@ -204,6 +204,7 @@
     <a href="#kurzy" style="--c:var(--c-fx)">Směnné kurzy</a>
     <a href="#dluhopisy" style="--c:var(--c-bond)">Státní dluhopisy</a>
     <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
+    <a href="#planovac" style="--c:var(--c-plnv)">Plánovač</a>
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
     <a href="#math" style="--c:var(--c-math)">Math Practice</a>
     <a href="#rozcestnik" style="--c:var(--c-roz)">Rozcestník</a>
@@ -243,12 +244,12 @@
     <div class="pattern">
       <h3>Statický web na GitHub Pages</h3>
       <p>Jen HTML, CSS a JavaScript bez serveru a bez buildu. Hosting je zdarma, nasazení = push do <code>main</code>. Nejjednodušší cesta, jak dostat nápad na web.</p>
-      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Rozcestník</div>
+      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Plánovač, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Supabase jako databáze a přihlášení</h3>
       <p>Postgres v cloudu s přihlášením. Data chrání pravidla přímo v databázi (Row Level Security), takže kód i repozitář můžou být veřejné a data stejně uvidí jen členové rodiny.</p>
-      <div class="used">Byty, Rodinné finance, Rozcestník</div>
+      <div class="used">Byty, Rodinné finance, Plánovač, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Node aplikace na Renderu</h3>
@@ -529,6 +530,42 @@
       </div>
     </div>
     <p class="tip"><strong>Tip:</strong> podcast je jen RSS soubor s odkazy na mp3. Když ho zveřejníš přes GitHub Pages, odebíráš ho v jakékoli podcastové aplikaci a hosting je zdarma.</p>
+  </article>
+
+  <article class="project" id="planovac" style="--c:var(--c-plnv)">
+    <header>
+      <h3>Plánovač</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/Planovac/?demo">Ukázka s demo daty</a>
+        <a href="https://jakubpechoucek-glitch.github.io/Planovac/">Web (přihlášení)</a>
+        <a href="https://github.com/jakubpechoucek-glitch/Planovac">Kód a README</a>
+      </div>
+    </header>
+    <p class="what">Rodinný kalendář volna: kdy má Lukáš prázdniny v ISM, kdy je Matěj volný na UCL, kolik zbývá Janě z 25 dnů dovolené a kdy můžeme vyrazit spolu. O cestách po jihovýchodní Asii hlasují všichni čtyři.</p>
+    <ul class="stack"><li>Jeden HTML soubor</li><li>Supabase (5 tabulek, RLS)</li><li>Společné přihlášení</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Roční přehled: řádek pro každého, vybarvené dny volna, svátky a řádek „Spolu“</li>
+          <li>Společná volna: kdy mají volno Lukáš i Jakub a kolik dnů dovolené by si musela vzít Jana</li>
+          <li>Návrhy cest s hodnocením 1–5 hvězdiček a komentáři; potvrzená cesta Janě rovnou odečte dovolenou</li>
+          <li>Počítadlo Janiny dovolené: nárok, vyčerpáno, naplánováno, zbývá</li>
+          <li>Úpravy volna, nově vyhlášených svátků a nastavení přímo na stránce</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Tabulky <code>plan_volno</code>, <code>plan_svatky</code>, <code>plan_nastaveni</code>, <code>plan_cesty</code>, <code>plan_hlasy</code> v Supabase Rozcestníku, chráněné <code>je_clen()</code></li>
+          <li>Dovolená se počítá v pracovních dnech; víkendy a filipínské svátky se neodečítají. Matějovi se počítá jen volno mimo výuku na UCL</li>
+          <li>Trigger na serveru zapíše hlas vždy za přihlášeného, takže hlasovat za druhého nejde</li>
+          <li>Prázdniny ISM se jednorázově přepsaly z PDF kalendářů 2026/27 a 2027/28, svátky z Nager.Date a z kalendáře ISM, termíny UCL z oficiálního webu</li>
+          <li>Režim <code>?demo</code> běží bez přihlášení se smyšlenými daty</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> nejdřív data, pak obrazovky. Když jsou prázdniny, svátky a pravidla („co je pracovní den“) v databázi, odpovědi typu „kdy můžeme jet a kolik to stojí Janinu dovolenou“ už jsou jen výpočet.</p>
   </article>
 
   <article class="project" id="lukas" style="--c:var(--c-uni)">

@@ -542,7 +542,7 @@
       </div>
     </header>
     <p class="what">Rodinný kalendář volna: kdy má Lukáš prázdniny v ISM, kdy je Matěj volný na UCL, kolik zbývá Janě z 25 dnů dovolené a kdy můžeme vyrazit spolu. O cestách po jihovýchodní Asii hlasují všichni čtyři.</p>
-    <ul class="stack"><li>Jeden HTML soubor</li><li>Supabase (5 tabulek, RLS)</li><li>Společné přihlášení</li><li>GitHub Pages</li></ul>
+    <ul class="stack"><li>Jeden HTML soubor</li><li>Supabase (6 tabulek, RLS)</li><li>Společné přihlášení</li><li>GitHub Pages</li></ul>
     <div class="cols">
       <div>
         <h4>Co umí</h4>
@@ -552,7 +552,7 @@
           <li>Výjimky ze svátků: „škola / práce i přes svátek“ (např. ISM učí 2. a 3. den ASEAN svátků) zruší volno jen konkrétnímu člověku</li>
           <li>Společná volna: kdy mají volno Lukáš i Jakub a kolik dnů dovolené by si musela vzít Jana</li>
           <li>Nabídka volných termínů pro celou rodinu (od 3 dní) – návrh cesty se předvyplní jedním kliknutím</li>
-          <li>Návrhy cest s hodnocením 1–5 hvězdiček a komentáři; potvrzená cesta Janě rovnou odečte dovolenou</li>
+          <li>Návrh cesty = termín; každý k němu navrhne až 3 destinace (státy s vlajkou) a všichni hodnotí všechny destinace 1–5 hvězdičkami. Vybraná destinace potvrdí cestu a Janě rovnou odečte dovolenou</li>
           <li>Počítadlo Janiny dovolené: nárok, vyčerpáno, naplánováno, zbývá</li>
           <li>Úpravy volna, nově vyhlášených svátků a nastavení přímo na stránce</li>
         </ul>
@@ -560,7 +560,7 @@
       <div>
         <h4>Jak je to postavené</h4>
         <ul>
-          <li>Tabulky <code>plan_volno</code>, <code>plan_svatky</code>, <code>plan_nastaveni</code>, <code>plan_cesty</code>, <code>plan_hlasy</code> v Supabase Rozcestníku, chráněné <code>je_clen()</code></li>
+          <li>Tabulky <code>plan_volno</code>, <code>plan_svatky</code>, <code>plan_nastaveni</code>, <code>plan_cesty</code>, <code>plan_destinace</code>, <code>plan_hlasy</code> v Supabase Rozcestníku, chráněné <code>je_clen()</code></li>
           <li>Dovolená se počítá v pracovních dnech; víkendy a filipínské svátky se neodečítají. Matějovi se počítá jen volno mimo výuku na UCL</li>
           <li>Trigger na serveru zapíše hlas vždy za přihlášeného, takže hlasovat za druhého nejde</li>
           <li>Prázdniny ISM se jednorázově přepsaly z PDF kalendářů 2026/27 a 2027/28, svátky z Nager.Date a z kalendáře ISM, termíny UCL z oficiálního webu</li>

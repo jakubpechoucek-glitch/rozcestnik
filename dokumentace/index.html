@@ -21,19 +21,19 @@
     /* barvy projektů – stejné jako dlaždice na Rozcestníku */
     --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
     --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
-    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c; --c-jid: #5a2a17;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
       --chip: #2a2a30; --link: #8ab4ff;
-      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070;
     }
   }
   :root[data-theme="dark"] {
     --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
     --chip: #2a2a30; --link: #8ab4ff;
-    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070;
   }
 
   * { box-sizing: border-box; }
@@ -205,6 +205,7 @@
     <a href="#dluhopisy" style="--c:var(--c-bond)">Státní dluhopisy</a>
     <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
     <a href="#planovac" style="--c:var(--c-plnv)">Plánovač</a>
+    <a href="#jidelnicek" style="--c:var(--c-jid)">Jídelníček</a>
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
     <a href="#math" style="--c:var(--c-math)">Math Practice</a>
     <a href="#rozcestnik" style="--c:var(--c-roz)">Rozcestník</a>
@@ -244,12 +245,12 @@
     <div class="pattern">
       <h3>Statický web na GitHub Pages</h3>
       <p>Jen HTML, CSS a JavaScript bez serveru a bez buildu. Hosting je zdarma, nasazení = push do <code>main</code>. Nejjednodušší cesta, jak dostat nápad na web.</p>
-      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Plánovač, Rozcestník</div>
+      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Plánovač, Jídelníček, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Supabase jako databáze a přihlášení</h3>
       <p>Postgres v cloudu s přihlášením. Data chrání pravidla přímo v databázi (Row Level Security), takže kód i repozitář můžou být veřejné a data stejně uvidí jen členové rodiny.</p>
-      <div class="used">Byty, Rodinné finance, Plánovač, Rozcestník</div>
+      <div class="used">Byty, Rodinné finance, Plánovač, Jídelníček, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Node aplikace na Renderu</h3>
@@ -571,6 +572,43 @@
       </div>
     </div>
     <p class="tip"><strong>Tip:</strong> nejdřív data, pak obrazovky. Když jsou prázdniny, svátky a pravidla („co je pracovní den“) v databázi, odpovědi typu „kdy můžeme jet a kolik to stojí Janinu dovolenou“ už jsou jen výpočet.</p>
+  </article>
+
+  <article class="project" id="jidelnicek" style="--c:var(--c-jid)">
+    <header>
+      <h3>Jídelníček</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/jidelnicek/?demo">Ukázka s demo daty</a>
+        <a href="https://jakubpechoucek-glitch.github.io/jidelnicek/">Web (přihlášení)</a>
+        <a href="https://github.com/jakubpechoucek-glitch/jidelnicek">Kód a README</a>
+      </div>
+    </header>
+    <p class="what">Týdenní jídelníček s hlasováním: ve všední dny večeře, když je přes den doma víc lidí, oběd. Jana, Lukáš a Jakub hodnotí návrhy hvězdičkami a vítěz rovnou plní nákupní seznam na den předem.</p>
+    <ul class="stack"><li>Jeden HTML soubor</li><li>Supabase (7 tabulek, RLS)</li><li>Data z Plánovače</li><li>Společné přihlášení</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Hlasování na příští týden: u každého dne návrhy jídel, 1–5 ★ od každého, vede nejvyšší součet; odznak s počtem dnů, kde přihlášený ještě nehlasoval</li>
+          <li>Oběd nebo večeře podle toho, kdo je doma: aspoň dva přes den doma = oběd, jinak večeře, jeden doma = nevaří se; porce podle počtu lidí; vše jde u dne přepsat</li>
+          <li>Typy jídel: 🍳 vaření, 🥪 rychlovka (pomazánka), 🧊 z mražáku, 🛵 objednávka – „Objednáme“ jde kdykoli a z nákupu vše zmizí</li>
+          <li>Nákup na zítra přepočtený na porce, podle oddělení v obchodě, s odškrtáváním a vlastními položkami; souhrn na 7 dní; seznam „Mám doma“</li>
+          <li>Měsíc dopředu: 5 týdnů s vítězi a otazníky tam, kde se ještě hlasuje</li>
+          <li>Recepty s hledáním i podle suroviny, přepočet porcí, archiv; vložení receptu z textu (např. ze Samsung Notes)</li>
+          <li>✨ Automatický návrh 3 jídel na den – přednost mají jídla, která jsme dlouho neměli</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Tabulky <code>jid_recepty</code>, <code>jid_suroviny</code>, <code>jid_dny</code>, <code>jid_kandidati</code>, <code>jid_hlasy</code>, <code>jid_nakup</code>, <code>jid_doma</code> v Supabase Rozcestníku, chráněné <code>je_clen()</code></li>
+          <li>Kdo je doma, čte z tabulek Plánovače (<code>plan_volno</code>, <code>plan_svatky</code>) podle stejných pravidel – služební cesta Jany ubere porci, prázdniny Lukáše přidají oběd</li>
+          <li>Trigger na serveru zapíše hlas vždy za přihlášeného</li>
+          <li>Výchozí recepty jsou v <code>recepty-vychozi.json</code>, z něj se generuje SQL i ukázka <code>?demo</code></li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> projekty se dají skládat. Jídelníček nemá vlastní kalendář – kdo je doma, ví z Plánovače, takže se volno zapisuje jen jednou.</p>
   </article>
 
   <article class="project" id="lukas" style="--c:var(--c-uni)">

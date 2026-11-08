@@ -27,6 +27,7 @@
     --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
     --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
     --plnv-bg: #0e4a4c;  --plnv-ink: #e3f6f4;  --plnv-sun: #ffb347;
+    --jid-bg: #5a2a17;   --jid-ink: #fdeee3;   --jid-accent: #ffc56b;  --jid-leaf: #8fd694;
     --error: #b3261e;
   }
   @media (prefers-color-scheme: dark) {
@@ -221,6 +222,11 @@
   .t-pod .spotify:hover { transform: scale(1.04); }
   .t-pod .spotify svg { width: 18px; height: 18px; }
 
+
+  /* --- Jídelníček: teplá terakota, talíř, hvězdy hlasování --- */
+  .t-jid { background: var(--jid-bg); color: var(--jid-ink); }
+  .t-jid h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.35rem; }
+  .t-jid .pill { color: var(--jid-accent); }
 
   /* --- Plánovač: tropická tyrkysová, pruhy volna, slunce --- */
   .t-plnv { background: var(--plnv-bg); color: var(--plnv-ink); }
@@ -598,6 +604,45 @@
         </div>
         <h3>Plánovač</h3>
         <p>Kdo má kdy volno – ISM, UCL, Janina dovolená a filipínské svátky. Společná volna a hlasování, kam vyrazit po Asii.</p>
+      </a>
+
+      <a class="tile t-jid wide" data-chraneno href="https://jakubpechoucek-glitch.github.io/jidelnicek/">
+        <div class="meta"><span class="pill">WEB · přihlášení</span><span class="go">otevřít →</span></div>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- týden: sedm dní, víkend jako oběd (slunce), všední dny večeře (měsíc) -->
+            <g stroke="currentColor" stroke-opacity=".18" stroke-width="2">
+              <rect x="14" y="14" width="30" height="30" rx="7"/><rect x="50" y="14" width="30" height="30" rx="7"/>
+              <rect x="86" y="14" width="30" height="30" rx="7"/><rect x="122" y="14" width="30" height="30" rx="7"/>
+              <rect x="158" y="14" width="30" height="30" rx="7"/>
+            </g>
+            <g fill="var(--jid-accent)">
+              <rect x="194" y="14" width="30" height="30" rx="7"/><rect x="230" y="14" width="30" height="30" rx="7"/>
+            </g>
+            <!-- talíř s příborem -->
+            <g transform="translate(120 84)" stroke="currentColor" stroke-width="2.4">
+              <circle r="26" stroke-opacity=".9"/><circle r="16" stroke-opacity=".35"/>
+              <path d="M-44 -22 V22 M-50 -22 V-8 Q-44 -2 -38 -8 V-22" stroke-opacity=".9"/>
+              <path d="M44 -22 Q54 -6 44 6 V22" stroke-opacity=".9"/>
+            </g>
+            <!-- lístek bylinky -->
+            <path d="M110 76 Q120 64 132 72 Q122 86 110 76 Z" fill="var(--jid-leaf)"/>
+            <!-- hvězdy hlasování -->
+            <g fill="var(--jid-accent)" transform="translate(222 86)">
+              <path d="M0 -9 L2.6 -2.6 L9 -2.6 L3.9 1.3 L5.8 7.8 L0 3.9 L-5.8 7.8 L-3.9 1.3 L-9 -2.6 L-2.6 -2.6 Z"/>
+              <path transform="translate(22 0)" d="M0 -9 L2.6 -2.6 L9 -2.6 L3.9 1.3 L5.8 7.8 L0 3.9 L-5.8 7.8 L-3.9 1.3 L-9 -2.6 L-2.6 -2.6 Z"/>
+              <path transform="translate(44 0)" d="M0 -9 L2.6 -2.6 L9 -2.6 L3.9 1.3 L5.8 7.8 L0 3.9 L-5.8 7.8 L-3.9 1.3 L-9 -2.6 L-2.6 -2.6 Z" fill-opacity=".4"/>
+            </g>
+            <!-- nákupní seznam -->
+            <g transform="translate(300 62)" stroke="currentColor" stroke-width="2.2">
+              <rect x="0" y="0" width="44" height="52" rx="6" stroke-opacity=".8"/>
+              <path d="M9 14 l3 3 l6 -6 M9 28 l3 3 l6 -6" stroke="var(--jid-leaf)"/>
+              <path d="M24 15 H36 M24 29 H36 M10 42 H36" stroke-opacity=".5"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Jídelníček</h3>
+        <p>Co se bude vařit příští týden – rodina hlasuje hvězdičkami, vítěz rovnou plní nákupní seznam na den předem. Recepty, mražák i objednávka zvenku.</p>
       </a>
 
     </div>

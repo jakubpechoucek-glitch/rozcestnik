@@ -686,11 +686,12 @@
     <header>
       <h3>Zdravotní přehled</h3>
       <div class="links">
+        <a href="https://health-dashboard-5621.onrender.com/">Web (přihlášení Googlem)</a>
         <a href="https://github.com/jakubpechoucek-glitch/health-dashboard">Kód a README (soukromé repo)</a>
       </div>
     </header>
-    <p class="what">Osobní časová osa zdraví jen pro mě: data z hodinek Garmin, krevní rozbory, lékařská vyšetření a výsledek genetické analýzy na jednom místě. Běží lokálně, nic z toho není veřejné. Projekt je teprve rozjetý, zatím je hotový základ (API a databáze).</p>
-    <ul class="stack"><li>Python + FastAPI</li><li>SQLite</li><li>Garmin Health API (push)</li><li>pytest</li><li>gitleaks</li></ul>
+    <p class="what">Osobní časová osa zdraví jen pro mě: data z hodinek Garmin, krevní rozbory, lékařská vyšetření a výsledek genetické analýzy na jednom místě. Běží na Renderu (Frankfurt) za přihlášením Googlem a dostane se do něj jen vlastník. Projekt je teprve rozjetý, zatím je hotový základ (API, databáze a jednoduchá časová osa).</p>
+    <ul class="stack"><li>Python + FastAPI</li><li>SQLite</li><li>Garmin Personal API</li><li>Supabase Auth (Google)</li><li>Render</li><li>pytest</li><li>gitleaks</li></ul>
     <div class="cols">
       <div>
         <h4>Co umí (a co přijde)</h4>
@@ -707,8 +708,8 @@
         <ul>
           <li>Tabulky <code>garmin_raw</code> (surové payloady), <code>metric_daily</code>, <code>lab_result</code>, <code>health_event</code></li>
           <li>Surová data se ukládají vždy, normalizace je jen pohled nad nimi, takže chybu v mapování polí jde opravit přepočtem</li>
-          <li>Webhook je <code>/garmin/webhook/&lt;token&gt;</code>; token v URL zná jen Garmin, nesprávný token vrací 404</li>
-          <li>Aplikace poslouchá jen na <code>127.0.0.1</code>; ven by měla jít jedině cesta webhooku přes tunel</li>
+          <li>Data běží na disku Renderu (SQLite), jedna instance; Garmin se napojí přes osobní API klíč</li>
+          <li>Přihlášení stejné jako u Lukas University: Rozcestník předá token (<code>#sso=</code>), server ho ověří u Supabase a pustí jen e-mail z <code>ALLOWED_EMAILS</code> (ne celou rodinu)</li>
           <li>Do gitu nepatří <code>data/</code>, <code>.env</code>, <code>*.db</code>, <code>*.fit</code>, <code>*.pdf</code>; hlídá to <code>.gitignore</code>, pre-commit a gitleaks</li>
         </ul>
       </div>

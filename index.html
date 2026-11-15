@@ -27,6 +27,7 @@
     --byty-bg: #1f2a37;  --byty-ink: #eef2f7;  --byty-lit: #f4c069;
     --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
     --plnv-bg: #0e4a4c;  --plnv-ink: #e3f6f4;  --plnv-sun: #ffb347;
+    --travel-bg: #143746; --travel-ink: #e5f8f3; --travel-accent: #94e9dd;
     --jid-bg: #5a2a17;   --jid-ink: #fdeee3;   --jid-accent: #ffc56b;  --jid-leaf: #8fd694;
     --knihy-bg: #f7e8c9; --knihy-ink: #4a2f14; --knihy-accent: #b07d2b;
     --zdr-bg: #e6f4ee;   --zdr-ink: #0f3d2e;   --zdr-accent: #e5484d;
@@ -242,6 +243,11 @@
   .t-pod .spotify svg { width: 16px; height: 16px; }
 
 
+  /* --- Rodinné cesty: noční mapa a tyrkysová trasa --- */
+  .t-travel { background: var(--travel-bg); color: var(--travel-ink); }
+  .t-travel h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.12rem; }
+  .t-travel .pill { color: var(--travel-accent); }
+
   /* --- Jídelníček: teplá terakota, talíř, hvězdy hlasování --- */
   .t-jid { background: var(--jid-bg); color: var(--jid-ink); }
   .t-jid h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.12rem; }
@@ -426,6 +432,11 @@
       <a class="tile t-plnv" data-chraneno href="https://jakubpechoucek-glitch.github.io/planovac/">
         <span class="ico" aria-hidden="true">🌴</span>
         <span class="txt"><h3>Plánovač <span class="pill">WEB</span></h3><p>Kdo má kdy volno, společná volna a hlasování, kam vyrazit.</p></span>
+      </a>
+
+      <a class="tile t-travel" href="https://github.com/jakubpechoucek-glitch/rodinne-cesty/tree/vyvoj/prvni-demo">
+        <span class="ico" aria-hidden="true">🗺️</span>
+        <span class="txt"><h3>Rodinné cesty <span class="pill">VE VÝVOJI</span></h3><p>Interaktivní mapa světa, historie cest a časová osa rodinného cestování.</p></span>
       </a>
 
       <a class="tile t-jid" data-chraneno href="https://jakubpechoucek-glitch.github.io/jidelnicek/">

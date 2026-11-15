@@ -593,13 +593,14 @@
       if (zpet) box.querySelector("#zpet").onclick = () => vykresli();
     }
 
-    async function vykresli(zprava) {
+    async function vykresli(zprava, bezSso) {
       if (!A.nastaveno) {
         box.innerHTML = `<h2>Přihlášení</h2><p class="msg">Zatím není nastavené (chybí připojení k Supabase v auth.js).</p>`;
         return;
       }
       if (obnova) return noveHeslo(false);
-      const s = await A.stav();
+      let s = await A.stav();
+      if (s.session && !(await A.platnaRelace())) s = await A.stav();   // relace zrušená jinde se smaže a ukáže se přihlášení
       if (!s.session) return prihlaseni();
       if (!s.clen) {
         box.innerHTML = `<h2>Účet</h2><p class="msg err">Účet ${esc(s.email)} není mezi členy rodiny.</p>
@@ -608,9 +609,10 @@
         return;
       }
       if (next) { location.replace(next); return; }
-      if (ssoCil) {
+      if (ssoCil && !bezSso) {
         const url = await A.odkazSPrihlasenim(ssoCil);
         if (url) { location.replace(url); return; }
+        return vykresli(zprava, true);                  // token se nepodařilo předat (např. relace byla neplatná): ukázat účet nebo přihlášení
       }
       box.innerHTML = `<h2>Účet</h2>
         <p style="margin:0 0 10px">Přihlášen: <span class="kdo">${esc(s.jmeno)}</span></p>

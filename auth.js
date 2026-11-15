@@ -48,9 +48,32 @@
     if (error) throw error;
   }
 
+  // Smaže přihlášení jen v tomto prohlížeči. Nespoléháme na odpověď serveru: relace tam už nemusí existovat
+  // (zrušilo ji odhlášení jinde) a server pak odpoví 403, po kterém knihovna lokální relaci nesmaže.
+  async function zrusMistniRelaci() {
+    try { if (client) await client.auth.signOut({ scope: "local" }); } catch (e) {}
+    try { localStorage.removeItem("rodina-auth"); } catch (e) {}
+  }
+
+  // Odhlášení jen na tomto zařízení. Dřívější „global“ rušilo relace na všech zařízeních a na ostatních zůstávaly
+  // neplatné relace, ze kterých se pak nešlo odhlásit ani se přihlásit k webům na jiné doméně.
   async function odhlasit() {
-    if (client) await client.auth.signOut();
+    await zrusMistniRelaci();
     location.href = LOGIN_URL;
+  }
+
+  // Přístupový token bývá časově platný i po zrušení relace na serveru (odhlášení na jiném zařízení): server
+  // pak odpovídá 403 session_not_found. Relaci proto ověříme dotazem na server a neplatnou smažeme.
+  // Při síťové chybě nic nerušíme (nejsme si jisti). Vrací true, pokud je relace v pořádku.
+  async function platnaRelace() {
+    if (!client) return false;
+    const { data } = await client.auth.getSession();
+    if (!data.session) return false;
+    try {
+      const { error } = await client.auth.getUser();
+      if (error && (error.status === 401 || error.status === 403)) { await zrusMistniRelaci(); return false; }
+    } catch (e) { /* bez spojení */ }
+    return true;
   }
 
   async function obnovaHesla(email) {
@@ -86,6 +109,7 @@
   async function odkazSPrihlasenim(cil) {
     const url = SSO_CILE[cil];
     if (!url || !client) return null;
+    if (!(await platnaRelace())) return null;          // nikdy nepředat token zrušené relace
     const { data } = await client.auth.getSession();
     const token = data.session?.access_token;
     return token ? url + "#sso=" + encodeURIComponent(token) : null;
@@ -129,7 +153,7 @@
 
   window.RodinaAuth = {
     client, nastaveno, LOGIN_URL, zOdkazuNaObnovu,
-    stav, prihlasit, prihlasitGoogle, odhlasit, obnovaHesla, noveHeslo, bezpecnyNavrat, vyzadujPrihlaseni,
+    stav, platnaRelace, prihlasit, prihlasitGoogle, odhlasit, obnovaHesla, noveHeslo, bezpecnyNavrat, vyzadujPrihlaseni,
     SSO_CILE, odkazSPrihlasenim,
   };
 })();

@@ -28,6 +28,7 @@
     --fin-bg: #163d32;   --fin-ink: #e6f4ee;   --fin-accent: #f2c45a;
     --plnv-bg: #0e4a4c;  --plnv-ink: #e3f6f4;  --plnv-sun: #ffb347;
     --jid-bg: #5a2a17;   --jid-ink: #fdeee3;   --jid-accent: #ffc56b;  --jid-leaf: #8fd694;
+    --zdr-bg: #e6f4ee;   --zdr-ink: #0f3d2e;   --zdr-accent: #e5484d;
     --error: #b3261e;
   }
   @media (prefers-color-scheme: dark) {
@@ -36,6 +37,7 @@
       --diary-bg: #2a2418; --diary-ink: #f0e3c6; --diary-rule: #3a3222;
       --home-bg: #2b1d12;  --home-ink: #ffd2ad;
       --bond-bg: #16212b;  --bond-ink: #d6e8f5; --bond-accent: #4cc79a;
+      --zdr-bg: #13271f;   --zdr-ink: #d3f0e3;  --zdr-accent: #ff6b70;
       --error: #ff8a80;
     }
   }
@@ -274,6 +276,11 @@
   .t-fin h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.12rem; }
   .t-fin .pill { color: var(--fin-accent); }
 
+  /* --- Zdraví: mátová, tep srdce --- */
+  .t-zdr { background: var(--zdr-bg); color: var(--zdr-ink); }
+  .t-zdr h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.12rem; }
+  .t-zdr .pill { color: var(--zdr-accent); }
+
   /* --- Dokumentace: otevřená kniha s kódem --- */
   .t-docs { background: var(--tile); color: var(--text); border-color: var(--line); }
   .t-docs .ico, .t-bond .ico, .t-diary .ico, .t-home .ico { background: rgba(0,0,0,.07); }
@@ -417,6 +424,18 @@
       <a class="tile t-jid" data-chraneno href="https://jakubpechoucek-glitch.github.io/jidelnicek/">
         <span class="ico" aria-hidden="true">🍽️</span>
         <span class="txt"><h3>Jídelníček <span class="pill">WEB</span></h3><p>Co se bude vařit příští týden: hlasování, recepty, nákupní seznam.</p></span>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="skupina">
+    <h2>Zdraví</h2>
+    <div class="grid">
+
+      <a class="tile t-zdr" data-chraneno data-sso="zdravi" href="https://health-dashboard-5621.onrender.com/">
+        <span class="ico" aria-hidden="true">🫀</span>
+        <span class="txt"><h3>Zdravotní přehled <span class="pill">APP</span></h3><p>Osobní časová osa: Garmin, krevní rozbory, vyšetření a genetika na jednom místě.</p></span>
       </a>
 
     </div>

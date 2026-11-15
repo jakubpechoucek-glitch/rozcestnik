@@ -78,6 +78,7 @@
   // přihlášení. Jen tyto pevné adresy – token nikdy nepošleme jinam.
   const SSO_CILE = {
     lukas: "https://lukas-university.onrender.com/",
+    zdravi: "https://health-dashboard-5621.onrender.com/",
   };
 
   // Adresa cílového webu s aktuálním přístupovým tokenem v části za #

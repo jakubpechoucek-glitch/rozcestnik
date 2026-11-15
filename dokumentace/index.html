@@ -21,19 +21,19 @@
     /* barvy projektů – stejné jako dlaždice na Rozcestníku */
     --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
     --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
-    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c; --c-jid: #5a2a17; --c-zdr: #e5484d;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c; --c-jid: #5a2a17; --c-zdr: #e5484d; --c-knihy: #b07d2b;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
       --chip: #2a2a30; --link: #8ab4ff;
-      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a;
     }
   }
   :root[data-theme="dark"] {
     --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
     --chip: #2a2a30; --link: #8ab4ff;
-    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a;
   }
 
   * { box-sizing: border-box; }
@@ -192,7 +192,7 @@
       <strong>Stavební kameny</strong><span class="sub">6 postupů, které se opakují</span></a></li>
     <li><a href="#projekty" style="--q:#2a78d6">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-      <strong>Projekty</strong><span class="sub">14 projektů do detailu</span></a></li>
+      <strong>Projekty</strong><span class="sub">15 projektů do detailu</span></a></li>
   </ul>
 
   <nav class="toc" aria-label="Projekty">
@@ -206,6 +206,7 @@
     <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
     <a href="#planovac" style="--c:var(--c-plnv)">Plánovač</a>
     <a href="#jidelnicek" style="--c:var(--c-jid)">Jídelníček</a>
+    <a href="#knihy" style="--c:var(--c-knihy)">Čtenářský deník</a>
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
     <a href="#math" style="--c:var(--c-math)">Math Practice</a>
     <a href="#zdravi" style="--c:var(--c-zdr)">Zdravotní přehled</a>
@@ -246,12 +247,12 @@
     <div class="pattern">
       <h3>Statický web na GitHub Pages</h3>
       <p>Jen HTML, CSS a JavaScript bez serveru a bez buildu. Hosting je zdarma, nasazení = push do <code>main</code>. Nejjednodušší cesta, jak dostat nápad na web.</p>
-      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Plánovač, Jídelníček, Rozcestník</div>
+      <div class="used">Půdorysy, Stavební deník, Financování RD, Byty, Rodinné finance, Dluhopisy, Plánovač, Jídelníček, Čtenářský deník, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Supabase jako databáze a přihlášení</h3>
       <p>Postgres v cloudu s přihlášením. Data chrání pravidla přímo v databázi (Row Level Security), takže kód i repozitář můžou být veřejné a data stejně uvidí jen členové rodiny.</p>
-      <div class="used">Byty, Rodinné finance, Plánovač, Jídelníček, Rozcestník</div>
+      <div class="used">Byty, Rodinné finance, Plánovač, Jídelníček, Čtenářský deník, Rozcestník</div>
     </div>
     <div class="pattern">
       <h3>Node aplikace na Renderu</h3>
@@ -271,7 +272,7 @@
     <div class="pattern">
       <h3>Osobní data mimo git</h3>
       <p>Repozitáře jsou veřejné, takže skutečná čísla, známky ani zdrojové Excely do nich nepatří. Data žijí v databázi, lokální kopie v ignorované složce, k ukázce slouží smyšlená demo data.</p>
-      <div class="used">Byty, Rodinné finance, Lukas University</div>
+      <div class="used">Byty, Rodinné finance, Čtenářský deník, Lukas University</div>
     </div>
   </div>
 
@@ -610,6 +611,43 @@
       </div>
     </div>
     <p class="tip"><strong>Tip:</strong> projekty se dají skládat. Jídelníček nemá vlastní kalendář – kdo je doma, ví z Plánovače, takže se volno zapisuje jen jednou.</p>
+  </article>
+
+  <article class="project" id="knihy" style="--c:var(--c-knihy)">
+    <header>
+      <h3>Čtenářský deník</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/ctenarsky-denik/">Web</a>
+        <a href="https://jakubpechoucek-glitch.github.io/ctenarsky-denik/?demo">Demo</a>
+        <a href="https://github.com/jakubpechoucek-glitch/ctenarsky-denik">Kód</a>
+      </div>
+    </header>
+    <p class="what">Evidence čtení: u každé knihy kdy jsem ji začal a dočetl, rychlost čtení podle počtu stran a přehledy po měsících a letech.</p>
+    <ul class="stack"><li>HTML/CSS</li><li>Vanilla JS</li><li>Supabase</li><li>Google Books / Open Library</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Přidání knihy podle ISBN (ručně nebo naskenováním čárového kódu mobilem), údaje se dohledají samy a před uložením jdou opravit</li>
+          <li>Stavy rozečtená / dočtená / nedočtená a tlačítko „Dočteno dnes“</li>
+          <li>Statistiky za vybraný rok: počet knih a stran, stran za den, dní na knihu, nejrychlejší a nejpomalejší kniha, trend oproti předchozímu roku</li>
+          <li>Graf stran po měsících a souhrn po letech</li>
+          <li>Jazyk knihy: u anglických originálů se zobrazí vlajka UK, jazyk se při dohledání ISBN nastaví sám</li>
+          <li>Ručně doplněné knihy s odhadnutými daty se označí příznakem „odhad“</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Čtyři soubory: <code>index.html</code>, <code>app.js</code>, <code>stats.js</code>, <code>styles.css</code>; výpočty statistik jsou odděleně ve <code>stats.js</code> a mají vlastní testy</li>
+          <li>Jedna tabulka <code>cteni</code> v rodinném Supabase projektu, Row Level Security: každý vidí jen své záznamy, přihlášení společné s Rozcestníkem</li>
+          <li>ISBN se dohledává v Google Books (s API klíčem omezeným na adresu webu) a jako záloha v Open Library</li>
+          <li>Historie se jednorázově naimportovala z Databáze knih, importní soubor je jen lokálně a v <code>.gitignore</code></li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> otevři si <a href="https://jakubpechoucek-glitch.github.io/ctenarsky-denik/?demo">režim <code>?demo</code></a>: aplikace běží bez přihlášení na smyšlených knihách, takže si ji můžeš celou vyzkoušet a nic se neukládá. Stejný trik funguje u každého projektu s osobními daty.</p>
+    <p class="tip"><strong>Tip:</strong> bezplatné API pro dohledání knih bez klíče sdílí kvótu s ostatními uživateli a občas vrátí chybu 429. Vlastní API klíč omezený na adresu webu je do veřejného kódu v pořádku a problém vyřeší.</p>
   </article>
 
   <article class="project" id="lukas" style="--c:var(--c-uni)">

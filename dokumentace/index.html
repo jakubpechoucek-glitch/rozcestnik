@@ -21,19 +21,19 @@
     /* barvy projektů – stejné jako dlaždice na Rozcestníku */
     --c-plan: #17325c; --c-diary: #f2b705; --c-home: #e07a2e; --c-byty: #c8902e;
     --c-fin: #163d32;  --c-fx: #1fa36b;    --c-bond: #1f7a5c; --c-pod: #e0604f;
-    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c; --c-jid: #5a2a17; --c-zdr: #e5484d; --c-knihy: #b07d2b;
+    --c-uni: #7a2440;  --c-roz: #1c1c1e;   --c-math: #26245c; --c-plnv: #0e4a4c; --c-jid: #5a2a17; --c-zdr: #e5484d; --c-knihy: #b07d2b; --c-cesty: #0f6b78;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
       --chip: #2a2a30; --link: #8ab4ff;
-      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a;
+      --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a; --c-cesty: #5fd0e0;
     }
   }
   :root[data-theme="dark"] {
     --bg: #121214; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30; --tile: #1c1c20;
     --chip: #2a2a30; --link: #8ab4ff;
-    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a;
+    --c-plan: #5b8ff0; --c-fin: #4cc79a; --c-uni: #e07a9b; --c-roz: #ececef; --c-math: #9b98ff; --c-plnv: #4fd1c5; --c-jid: #f0a070; --c-knihy: #e0b05a; --c-cesty: #5fd0e0;
   }
 
   * { box-sizing: border-box; }
@@ -192,7 +192,7 @@
       <strong>Stavební kameny</strong><span class="sub">6 postupů, které se opakují</span></a></li>
     <li><a href="#projekty" style="--q:#2a78d6">
       <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-      <strong>Projekty</strong><span class="sub">15 projektů do detailu</span></a></li>
+      <strong>Projekty</strong><span class="sub">16 projektů do detailu</span></a></li>
   </ul>
 
   <nav class="toc" aria-label="Projekty">
@@ -205,6 +205,7 @@
     <a href="#dluhopisy" style="--c:var(--c-bond)">Státní dluhopisy</a>
     <a href="#podcast" style="--c:var(--c-pod)">Morning Briefing</a>
     <a href="#planovac" style="--c:var(--c-plnv)">Plánovač</a>
+    <a href="#cesty" style="--c:var(--c-cesty)">Rodinné cesty</a>
     <a href="#jidelnicek" style="--c:var(--c-jid)">Jídelníček</a>
     <a href="#knihy" style="--c:var(--c-knihy)">Čtenářský deník</a>
     <a href="#lukas" style="--c:var(--c-uni)">Lukas University</a>
@@ -574,6 +575,42 @@
       </div>
     </div>
     <p class="tip"><strong>Tip:</strong> nejdřív data, pak obrazovky. Když jsou prázdniny, svátky a pravidla („co je pracovní den“) v databázi, odpovědi typu „kdy můžeme jet a kolik to stojí Janinu dovolenou“ už jsou jen výpočet.</p>
+  </article>
+
+  <article class="project" id="cesty" style="--c:var(--c-cesty)">
+    <header>
+      <h3>Rodinné cesty</h3>
+      <div class="links">
+        <a href="https://jakubpechoucek-glitch.github.io/rodinne-cesty/">Web</a>
+        <a href="https://jakubpechoucek-glitch.github.io/rodinne-cesty/?demo">Ukázka s demo daty</a>
+        <a href="https://github.com/jakubpechoucek-glitch/rodinne-cesty">Kód</a>
+      </div>
+    </header>
+    <p class="what">Interaktivní kronika rodinného cestování: mapa světa, na které se postupně odemykají navštívené země, časová osa od roku 2018 a přehled všech letů. Země odemkne jen skutečně doložená návštěva, ne plán.</p>
+    <ul class="stack"><li>HTML/CSS</li><li>Vanilla JS</li><li>SVG mapa (Natural Earth)</li><li>Supabase</li><li>GitHub Pages</li></ul>
+    <div class="cols">
+      <div>
+        <h4>Co umí</h4>
+        <ul>
+          <li>Mapa světa se 177 oblastmi a časová osa s přehráváním; při letu proletí po oblouku letadélko, v měsíci s letem se osa zpomalí a několik letů v měsíci letí po sobě</li>
+          <li>Filtr podle osob (všichni, společně, celá rodina, jednotlivě), statistiky zemí, cest a let na cestách, přiblížení na Asii</li>
+          <li>Záložka <strong>Lety</strong> (odkaz <code>#lety</code>): přehled jen letů s hledáním a filtry, barevné označení (ověřeno / k ověření / k dořešení) a úprava přímo v řádku, včetně výběru letiště z hotového seznamu s polohou</li>
+          <li>Formulář nové návštěvy a potvrzení plánované cesty; plány se jednosměrně načítají z Plánovače a samy nic neodemknou</li>
+          <li>Editor cest, pobytů a přesunů (letadlo, auto, vlak, autobus, loď) pro ruční opravy historických záznamů</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Jak je to postavené</h4>
+        <ul>
+          <li>Statická stránka bez buildu: <code>index.html</code>, <code>live.js</code> (živý režim), <code>editor.js</code>, <code>flights.js</code> a číselník letišť <code>airports.js</code></li>
+          <li>Deset tabulek <code>travel_*</code> v rodinném Supabase projektu, všechny s Row Level Security jen pro členy rodiny; přihlášení je společné s Rozcestníkem</li>
+          <li>Lety, místa i pobyty mají stav „navrženo / ověřeno“; trasa se na mapě kreslí jen u ověřeného letu s datem, polohou obou míst a cestujícími, nic se nedomýšlí</li>
+          <li>Osobní údaje a doklady v repozitáři nejsou; skutečné cesty žijí jen v databázi za přihlášením</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Tip:</strong> otevři si <a href="https://jakubpechoucek-glitch.github.io/rodinne-cesty/?demo">režim <code>?demo</code></a>: mapa, přehrávání s letadélkem i záložka Lety běží bez přihlášení na smyšlených cestách, takže si můžeš všechno vyzkoušet a nic se neuloží.</p>
+    <p class="tip"><strong>Tip:</strong> letadélko se objeví až u letu, který má datum, polohu obou letišť a je označený jako ověřený. Když ho nevidíš, otevři záložku Lety a podívej se, co u daného letu červeně chybí.</p>
   </article>
 
   <article class="project" id="jidelnicek" style="--c:var(--c-jid)">

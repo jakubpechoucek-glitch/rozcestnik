@@ -17,7 +17,6 @@ Platí pro všechny moje projekty. Projektové `CLAUDE.md` mají přednost, poku
 - Pracuj na přidělené větvi. Commity piš česky, popisně, ve tvaru „co a proč“.
 - PR, merge a sledování PR dělej jen na vyžádání („udělej PR do mainu“, „mergni to“, „sleduj PR“). Po merge ověř nasazení (GitHub Pages, Render logy) a řekni mi, co mám zkontrolovat.
 - Dočasné soubory (skripty, screenshoty, `ui-test*.js`) dávej mimo repo, do scratchpadu, a nekomituj je.
-- Každý nový projekt (i větší novinka u stávajícího) se musí projevit v Dokumentaci projektů na Rozcestníku (`dokumentace/index.html`): vlastní karta s odkazy na web, ukázku `?demo` a kód, popisem „Co umí“ a **povinně sekcí „Jak je to postavené“** (soubory, technologie, data a přihlášení, hosting). Při změně projektu sekci aktualizuj a zvyš počet projektů v přehledu.
 
 ## 3. Ověřuj, nepředpokládej
 - Když opravuješ chybu, projdi i sourozenecká místa se stejným vzorcem (např. další sekce, jiný pohled).
@@ -49,7 +48,6 @@ Platí pro všechny moje projekty. Projektové `CLAUDE.md` mají přednost, poku
 - Stav je vidět na první pohled: barevné rozlišení (OK / k ověření / k dořešení), výrazné nadpisy, zřetelná navigace. Vyhýbej se jednotvárným stránkám.
 - Důležité pohledy mají sdílitelný odkaz (např. `#nakup/tyden`), který přežije přihlášení.
 - Kde jsou data po osobách, přidej přepínač osob.
-- Každá nová dlaždice na Rozcestníku, tedy každá aplikace, musí mít uvnitř viditelný odkaz zpět do Rozcestníku (např. „← Rozcestník“ v záhlaví), funkční i v režimu `?demo`. Při přidání nové aplikace ověř oba směry: dlaždice vede do aplikace a aplikace vede zpátky.
 - Výchozí zobrazení má odpovídat reálnému použití (např. aktuální týden až do pondělka).
 - Data, která zadávám z jiného zařízení, ukládej do databáze, ne do lokálního stavu prohlížeče.
 

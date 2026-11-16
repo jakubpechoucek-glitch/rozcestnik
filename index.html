@@ -513,7 +513,7 @@
     <p class="backlog-note">Přidané nápady a odškrtnutí se ukládají jen v tomhle prohlížeči.</p>
   </section>
 
-  <footer>Nový projekt přidáš zkopírováním jedné dlaždice (<code>&lt;a class="tile …"&gt;</code> s ikonou, názvem a krátkým popisem) do příslušné sekce v souboru index.html.</footer>
+  <footer>Rozcestník si zaznamenává, kdo a kdy otevřel kterou aplikaci. Záznamy vidí jen správce a po roce se mažou.<br>Nový projekt přidáš zkopírováním jedné dlaždice (<code>&lt;a class="tile …"&gt;</code> s ikonou, názvem a krátkým popisem) do příslušné sekce v souboru index.html.</footer>
 </main>
 <script>
   // ---------------------------------------------------------- vyhledávání
@@ -650,6 +650,16 @@
         <div class="row"><button class="link" id="zmena">Změnit heslo</button><button class="primary" id="odhl">Odhlásit</button></div>`;
       box.querySelector("#odhl").onclick = A.odhlasit;
       box.querySelector("#zmena").onclick = () => noveHeslo(true);
+      // Odkaz na přehled přístupů vidí jen správce (oprávnění se ověřuje v databázi).
+      try {
+        A.client.rpc("je_spravce").then(({ data }) => {
+          if (data !== true) return;
+          const odkaz = document.createElement("a");
+          odkaz.href = "admin/"; odkaz.textContent = "Přístupy rodiny →"; odkaz.className = "link";
+          odkaz.style.cssText = "display:inline-block;margin-top:10px;font-size:.9rem";
+          box.append(odkaz);
+        }).catch(() => {});
+      } catch (e) {}
     }
 
     if (A.client) {
@@ -673,6 +683,14 @@
         if (okno) { okno.opener = null; okno.location.href = url; }
         else location.href = url;
       });
+    });
+
+    // Záznam přístupů: kliknutí na dlaždici (i prostředním tlačítkem) se zapíše na pozadí.
+    // Chyba záznamu nikdy nesmí zabránit otevření aplikace.
+    document.querySelectorAll("a.tile, .tile a.main-link").forEach((a) => {
+      const zapis = () => { try { if (A.zapisPristup) A.zapisPristup(A.projektZUrl(a.href), "dlazdice"); } catch (e) {} };
+      a.addEventListener("click", zapis);
+      a.addEventListener("auxclick", zapis);
     });
   })();
 </script>

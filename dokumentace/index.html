@@ -809,6 +809,7 @@
           <li>Dlaždice s vlastní SVG grafikou podle obsahu projektu, světlý i tmavý režim</li>
           <li>Jedno přihlášení (e-mail nebo Google) pro všechny chráněné weby</li>
           <li>Backlog nápadů s přidáváním a odškrtáváním</li>
+          <li>Stránka <strong>Přístupy rodiny</strong> jen pro správce: které projekty se používají, kdo co a kdy otevřel, kdo se dlouho neukázal; v režimu <code>?demo</code> na smyšlených datech</li>
         </ul>
       </div>
       <div>
@@ -817,6 +818,9 @@
           <li>Všechny weby běží na <code>jakubpechoucek-glitch.github.io</code>, sdílí tedy jeden origin a jedno uložené přihlášení</li>
           <li>Chráněný web načte <code>/rozcestnik/auth.js</code> a zavolá <code>RodinaAuth.vyzadujPrihlaseni()</code></li>
           <li>Členství ověřuje databáze (tabulka členů), ne stránka</li>
+          <li>Přístupy se zapisují do tabulky <code>pristupy</code> (kdo, co, kdy, mobil nebo počítač): kliknutí na dlaždici z <code>index.html</code> a vstup do chráněné aplikace ze společného <code>auth.js</code>, takže se přidávají samy u každého nového projektu</li>
+          <li>Zapisovat smí člen jen za sebe, číst jen správce (příznak <code>spravce</code> v tabulce členů, pravidla Row Level Security); záznamy se po roce mažou. Zápis běží na pozadí a při chybě nic nerozbije</li>
+          <li>Stránka <code>admin/index.html</code> počítá „otevření“ z kliknutí a přímých vstupů bez dvojího započtení a kreslí grafy čistým SVG bez knihoven</li>
         </ul>
       </div>
     </div>

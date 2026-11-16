@@ -76,6 +76,41 @@
     return true;
   }
 
+  // ---- Záznam přístupů (kdo kdy otevřel kterou aplikaci), viz docs/ADMIN-STATISTIKY.md ----
+  // Čtou je jen správci; zapisuje se na pozadí a chyba nikdy nesmí rozbít stránku.
+  let tokenCache = null;
+  if (client) client.auth.onAuthStateChange((ev, sess) => { tokenCache = (sess && sess.access_token) || null; });
+
+  // Krátký název projektu z adresy: první část cesty na github.io, jinak první část domény.
+  function projektZUrl(adresa) {
+    try {
+      const u = new URL(adresa, location.href);
+      const cast = u.hostname.endsWith("github.io") ? u.pathname.split("/")[1] || "" : u.hostname.split(".")[0];
+      return cast.toLowerCase().replace(/[^a-z0-9_-]/g, "-").slice(0, 60);
+    } catch (e) { return ""; }
+  }
+
+  function druhZarizeni() {
+    try { return window.matchMedia("(max-width: 820px)").matches ? "mobil" : "pocitac"; } catch (e) { return "neznamo"; }
+  }
+
+  // zdroj: "dlazdice" (kliknutí na Rozcestníku) nebo "aplikace" (vstup do chráněné aplikace).
+  function zapisPristup(projekt, zdroj, token) {
+    try {
+      const jwt = token || tokenCache;
+      if (!nastaveno || !jwt) return;
+      if (new URLSearchParams(location.search).has("demo")) return;      // ukázky se nepočítají
+      if (!/^[a-z0-9_-]{1,60}$/.test(projekt) || projekt === "rozcestnik") return;
+      fetch(SUPABASE_URL + "/rest/v1/pristupy", {
+        method: "POST",
+        keepalive: true,                                                  // dokončí se i při přechodu na jinou stránku
+        headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + jwt, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ projekt, zdroj, zarizeni: druhZarizeni() }),
+      }).then((r) => { if (!r.ok) console.warn("Záznam přístupu se nepodařilo uložit (HTTP " + r.status + ")."); })
+        .catch((e) => console.warn("Záznam přístupu se nepodařilo uložit:", e));
+    } catch (e) { console.warn("Záznam přístupu selhal:", e); }
+  }
+
   async function obnovaHesla(email) {
     const { error } = await client.auth.resetPasswordForEmail(email.trim(), { redirectTo: location.origin + LOGIN_URL });
     if (error) throw error;
@@ -148,12 +183,13 @@
       return null;
     }
     document.documentElement.classList.remove("auth-ceka");
+    zapisPristup(projektZUrl(location.href), "aplikace", s.session && s.session.access_token);
     return s;
   }
 
   window.RodinaAuth = {
     client, nastaveno, LOGIN_URL, zOdkazuNaObnovu,
     stav, platnaRelace, prihlasit, prihlasitGoogle, odhlasit, obnovaHesla, noveHeslo, bezpecnyNavrat, vyzadujPrihlaseni,
-    SSO_CILE, odkazSPrihlasenim,
+    SSO_CILE, odkazSPrihlasenim, zapisPristup, projektZUrl,
   };
 })();

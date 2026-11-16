@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Přístupy rodiny</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f2ee; --panel: #ffffff; --text: #1c1c1e; --muted: #66656b; --line: #e3e0d8;
+    --accent: #0f7a78; --accent-soft: #d7efec; --ok: #1f7a4d; --warn: #a86a00; --bad: #b3261e;
+    --ok-bg: #dff3e7; --warn-bg: #fbecc9; --bad-bg: #fbdcd9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121214; --panel: #1c1c20; --text: #ececef; --muted: #9b9aa2; --line: #2b2b30;
+      --accent: #4fd1c5; --accent-soft: #15403f; --ok: #6fd9a0; --warn: #f0c36a; --bad: #ff8f86;
+      --ok-bg: #153626; --warn-bg: #43361a; --bad-bg: #452220; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 14px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 6px 0 14px; }
+  .back { color: var(--accent); text-decoration: none; font-weight: 600; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); }
+  h1 { font: 600 1.55rem Georgia, serif; margin: 0; flex: 1 1 auto; }
+  .pill { font-size: .75rem; font-weight: 700; border-radius: 999px; padding: 4px 10px; background: var(--warn-bg); color: var(--warn); }
+  nav.tabs { display: flex; gap: 8px; margin: 0 0 12px; flex-wrap: wrap; }
+  nav.tabs button { font: inherit; font-weight: 600; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+  nav.tabs button[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  @media (prefers-color-scheme: dark) { nav.tabs button[aria-pressed="true"] { color: #08201f; } }
+  .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 14px; align-items: end; }
+  .filters label { display: grid; gap: 4px; font-size: .78rem; color: var(--muted); }
+  select { font: inherit; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); width: 100%; }
+  .check { display: flex !important; align-items: center; gap: 8px; padding: 10px 0; color: var(--text) !important; font-size: .9rem !important; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .kpi, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .kpi strong { display: block; font-size: 1.7rem; line-height: 1.2; }
+  .kpi span { color: var(--muted); font-size: .82rem; }
+  .card { margin-bottom: 14px; }
+  .card h2 { font-size: 1rem; margin: 0 0 4px; }
+  .note { color: var(--muted); font-size: .8rem; margin: 0 0 10px; }
+  .msg { padding: 10px 14px; border-radius: 10px; background: var(--accent-soft); margin-bottom: 12px; }
+  .msg.err { background: var(--bad-bg); color: var(--bad); }
+  .bar-row { display: grid; grid-template-columns: minmax(110px, 190px) 1fr auto; gap: 10px; align-items: center; padding: 5px 0; font-size: .9rem; }
+  .bar { height: 14px; border-radius: 7px; background: var(--accent); min-width: 2px; }
+  .bar-row.zero .bar { background: var(--warn); opacity: .5; }
+  .bar-row.stale .name::after { content: " · bez návštěv 90 dní"; color: var(--bad); font-size: .75rem; }
+  .bar-track { background: var(--accent-soft); border-radius: 7px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .86rem; }
+  th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; font-size: .78rem; }
+  td.num, th.num { text-align: right; }
+  td.cell { text-align: center; min-width: 38px; }
+  .status { border-radius: 999px; padding: 2px 10px; font-size: .75rem; font-weight: 700; }
+  .status.ok { background: var(--ok-bg); color: var(--ok); }
+  .status.warn { background: var(--warn-bg); color: var(--warn); }
+  .status.bad { background: var(--bad-bg); color: var(--bad); }
+  svg text { fill: var(--muted); font-size: 10px; }
+  svg .col { fill: var(--accent); }
+  .empty { color: var(--muted); padding: 10px 0; }
+  .denied { max-width: 460px; margin: 18vh auto; text-align: center; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← Rozcestník</a>
+    <h1>Přístupy rodiny</h1>
+    <span class="pill" id="demo-pill" hidden>DEMO · SMYŠLENÁ DATA</span>
+  </header>
+  <div id="app"><p class="empty">Načítám…</p></div>
+</div>
+<script src="../vendor/supabase-js-2.45.4.js"></script>
+<script src="../auth.js"></script>
+<script>
+(function () {
+  "use strict";
+  const DEMO = new URLSearchParams(location.search).has("demo") || location.protocol === "file:";
+  const app = document.getElementById("app");
+  const A = window.RodinaAuth;
+
+  // Čitelné názvy projektů podle krátkého názvu z adresy (jen veřejné názvy dlaždic).
+  const PROJEKTY = {
+    "pudorysy-cvrcovice": "Půdorysy Cvrčovice", "stavebnidennik": "Stavební deník", "assets_dashboard": "Financování RD",
+    "bytykpronajmu": "Byty k pronájmu", "rodinne-finance": "Rodinné finance", "smenne-kurzy": "Směnné kurzy",
+    "statni-dluhopisy": "Státní dluhopisy", "news-podcast": "Morning Briefing", "planovac": "Plánovač",
+    "rodinne-cesty": "Rodinné cesty", "jidelnicek": "Jídelníček", "ctenarsky-denik": "Čtenářský deník",
+    "health-dashboard-5621": "Zdravotní přehled", "lukas-university": "Lukas University", "mathpractise": "Math Practice",
+  };
+  const nazev = (slug) => PROJEKTY[slug] || slug;
+  const DAY = 86400000;
+
+  const S = { rows: [], lide: new Map(), moje: "", f: { dny: 30, osoba: "", projekt: "", skryt: false }, tab: "prehled" };
+
+  function el(tag, cls, text) { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+  const krestni = (jmeno) => String(jmeno || "").split(" ")[0] || "?";
+  const osoba = (email) => krestni(S.lide.get(email) || email);
+  const fmtDatum = (d) => d.toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
+  const fmtCas = (d) => d.toLocaleString("cs-CZ", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" });
+  function pred(d) {
+    const dny = Math.floor((Date.now() - d.getTime()) / DAY);
+    if (dny <= 0) return "dnes";
+    if (dny === 1) return "včera";
+    if (dny < 5) return "před " + dny + " dny";
+    return "před " + dny + " dny";
+  }
+
+  /* ---------- data ---------- */
+  function demoData() {
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const lide = [["alex@example.test", "Alex Demo"], ["bara@example.test", "Bára Demo"], ["cyril@example.test", "Cyril Demo"], ["dana@example.test", "Dana Demo"]];
+    const vahy = { "rodinne-finance": 9, "planovac": 8, "jidelnicek": 7, "rodinne-cesty": 5, "ctenarsky-denik": 3, "stavebnidennik": 2, "smenne-kurzy": 2, "mathpractise": 2, "lukas-university": 1 };
+    const slugs = Object.keys(vahy), soucet = slugs.reduce((a, k) => a + vahy[k], 0);
+    const rows = []; const ted = Date.now();
+    for (let d = 0; d < 365; d++) {
+      lide.forEach(([email], i) => {
+        const aktivita = [0.8, 0.6, 0.12, 0.35][i] * (d > 40 && i === 2 ? 0 : 1);
+        if (rnd() > aktivita) return;
+        const kolik = 1 + Math.floor(rnd() * 3);
+        for (let k = 0; k < kolik; k++) {
+          let r = rnd() * soucet, slug = slugs[0];
+          for (const s of slugs) { r -= vahy[s]; if (r <= 0) { slug = s; break; } }
+          const cas = new Date(ted - d * DAY - Math.floor(rnd() * 12 * 3600000));
+          const mobil = rnd() < 0.6 ? "mobil" : "pocitac";
+          if (rnd() < 0.8) rows.push({ cas: new Date(cas.getTime() - 20000), email, projekt: slug, zdroj: "dlazdice", zarizeni: mobil });
+          rows.push({ cas, email, projekt: slug, zdroj: "aplikace", zarizeni: mobil });
+        }
+      });
+    }
+    return { rows, lide: new Map(lide), moje: "alex@example.test" };
+  }
+  async function nactiLive() {
+    const db = A.client;
+    const od = new Date(Date.now() - 365 * DAY).toISOString();
+    let vse = [];
+    for (let z = 0; ; z += 1000) {
+      const { data, error } = await db.from("pristupy").select("cas,email,projekt,zdroj,zarizeni").gte("cas", od).order("cas", { ascending: false }).range(z, z + 999);
+      if (error) throw error;
+      vse = vse.concat(data);
+      if (data.length < 1000 || vse.length >= 50000) break;
+    }
+    const cl = await db.from("clenove").select("email,jmeno");
+    if (cl.error) throw cl.error;
+    const sess = await db.auth.getSession();
+    return { rows: vse.map((r) => ({ ...r, cas: new Date(r.cas) })), lide: new Map(cl.data.map((c) => [String(c.email).toLowerCase(), c.jmeno])), moje: String(sess.data.session?.user?.email || "").toLowerCase() };
+  }
+
+  /* ---------- výpočty ---------- */
+  // Otevření = kliknutí na dlaždici + přímé vstupy do aplikace (vstup do 2 minut po kliknutí se nepočítá dvakrát).
+  function otevreni(rows) {
+    const klik = new Map(), out = [];
+    const sorted = rows.slice().sort((a, b) => a.cas - b.cas);
+    for (const r of sorted) {
+      const key = r.email + "|" + r.projekt;
+      if (r.zdroj === "dlazdice") { out.push(r); (klik.get(key) || klik.set(key, []).get(key)).push(r.cas.getTime()); continue; }
+      const k = klik.get(key) || [];
+      const i = k.findIndex((t) => r.cas.getTime() - t >= 0 && r.cas.getTime() - t <= 120000);
+      if (i >= 0) k.splice(i, 1); else out.push(r);
+    }
+    return out;
+  }
+  function filtrovane() {
+    const od = Date.now() - S.f.dny * DAY;
+    return S.rows.filter((r) => r.cas.getTime() >= od && (!S.f.osoba || r.email === S.f.osoba) && (!S.f.projekt || r.projekt === S.f.projekt) && !(S.f.skryt && r.email === S.moje));
+  }
+  const spocti = (arr, klic) => { const m = new Map(); arr.forEach((r) => m.set(klic(r), (m.get(klic(r)) || 0) + 1)); return m; };
+
+  /* ---------- vykreslení ---------- */
+  function filtry() {
+    const box = el("div", "filters");
+    const sel = (popisek, hodnoty, aktualni, zmena) => {
+      const l = el("label", null, popisek); const s = document.createElement("select");
+      hodnoty.forEach(([v, t]) => s.append(new Option(t, v))); s.value = String(aktualni);
+      s.addEventListener("change", () => zmena(s.value)); l.append(s); return l;
+    };
+    box.append(sel("Období", [[7, "Posledních 7 dní"], [30, "Posledních 30 dní"], [90, "Posledních 90 dní"], [365, "Poslední rok"]], S.f.dny, (v) => { S.f.dny = Number(v); render(); }));
+    box.append(sel("Osoba", [["", "Všichni"], ...[...S.lide.keys()].map((e) => [e, osoba(e)])], S.f.osoba, (v) => { S.f.osoba = v; render(); }));
+    box.append(sel("Projekt", [["", "Všechny"], ...Object.keys(PROJEKTY).map((s) => [s, nazev(s)])], S.f.projekt, (v) => { S.f.projekt = v; render(); }));
+    const c = el("label", "check"); const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = S.f.skryt;
+    cb.addEventListener("change", () => { S.f.skryt = cb.checked; render(); }); c.append(cb, document.createTextNode("Skrýt moje vstupy")); box.append(c);
+    return box;
+  }
+  function kpis(op) {
+    const box = el("div", "kpis");
+    const lide = new Set(op.map((r) => r.email));
+    const pr = [...spocti(op, (r) => r.projekt).entries()].sort((a, b) => b[1] - a[1]);
+    const posledni = op.reduce((m, r) => (r.cas > m ? r.cas : m), new Date(0));
+    const k = (cislo, popis) => { const d = el("div", "kpi"); d.append(el("strong", null, cislo), el("span", null, popis)); return d; };
+    box.append(k(String(op.length), "otevření v období"), k(lide.size + " z " + S.lide.size, "aktivních osob"),
+      k(pr.length ? nazev(pr[0][0]) : "–", "nejoblíbenější projekt"), k(op.length ? pred(posledni) : "–", "poslední otevření"));
+    return box;
+  }
+  function projekty(op) {
+    const card = el("div", "card"); card.append(el("h2", null, "Které projekty se používají"));
+    card.append(el("p", "note", "Otevření = kliknutí na dlaždici + přímé vstupy do aplikace (bez dvojího počítání)."));
+    const m = spocti(op, (r) => r.projekt);
+    Object.keys(PROJEKTY).forEach((s) => { if (!m.has(s)) m.set(s, 0); });
+    const radky = [...m.entries()].sort((a, b) => b[1] - a[1] || nazev(a[0]).localeCompare(nazev(b[0]), "cs"));
+    const max = Math.max(1, ...radky.map((r) => r[1]));
+    const posl = new Map(); S.rows.forEach((r) => { if (!(S.f.osoba && r.email !== S.f.osoba)) posl.set(r.projekt, Math.max(posl.get(r.projekt) || 0, r.cas.getTime())); });
+    for (const [slug, pocet] of radky) {
+      const stale = !posl.has(slug) || Date.now() - posl.get(slug) > 90 * DAY;
+      const r = el("div", "bar-row" + (pocet === 0 ? " zero" : "") + (stale ? " stale" : ""));
+      const t = el("div", "bar-track"); const b = el("div", "bar"); b.style.width = Math.max(pocet ? 2 : 0, (pocet / max) * 100) + "%"; t.append(b);
+      r.append(el("span", "name", nazev(slug)), t, el("strong", null, String(pocet)));
+      card.append(r);
+    }
+    return card;
+  }
+  function podleDni(op) {
+    const card = el("div", "card"); card.append(el("h2", null, "Vývoj v čase"));
+    const tyden = S.f.dny > 90; card.append(el("p", "note", tyden ? "Otevření po týdnech." : "Otevření po dnech."));
+    const krok = tyden ? 7 : 1, n = Math.ceil(S.f.dny / krok), konec = new Date(); konec.setHours(23, 59, 59, 999);
+    const sloupce = new Array(n).fill(0);
+    op.forEach((r) => { const i = n - 1 - Math.floor((konec - r.cas) / (krok * DAY)); if (i >= 0 && i < n) sloupce[i]++; });
+    const max = Math.max(1, ...sloupce), W = 600, H = 120, sirka = W / n;
+    const NS = "http://www.w3.org/2000/svg"; const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H + 16}`); svg.setAttribute("width", "100%"); svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "Graf otevření v čase");
+    sloupce.forEach((v, i) => {
+      const h = (v / max) * H; const r = document.createElementNS(NS, "rect");
+      r.setAttribute("class", "col"); r.setAttribute("x", String(i * sirka + 1)); r.setAttribute("width", String(Math.max(1, sirka - 2)));
+      r.setAttribute("y", String(H - h)); r.setAttribute("height", String(h)); r.setAttribute("rx", "2");
+      const t = document.createElementNS(NS, "title"); const d = new Date(konec.getTime() - (n - 1 - i) * krok * DAY);
+      t.textContent = fmtDatum(d) + (tyden ? " (týden)" : "") + ": " + v; r.append(t); svg.append(r);
+    });
+    const popis = (i, text, anchor) => { const t = document.createElementNS(NS, "text"); t.setAttribute("x", String(i)); t.setAttribute("y", String(H + 13)); t.setAttribute("text-anchor", anchor); t.textContent = text; svg.append(t); };
+    popis(0, fmtDatum(new Date(konec.getTime() - (n - 1) * krok * DAY)), "start"); popis(W, "dnes", "end");
+    card.append(svg); return card;
+  }
+  function matice(op) {
+    const card = el("div", "card"); card.append(el("h2", null, "Kdo co otevřel")); card.append(el("p", "note", "Počet otevření v období; tmavší políčko = víc."));
+    const m = new Map(); op.forEach((r) => { const k = r.email + "|" + r.projekt; m.set(k, (m.get(k) || 0) + 1); });
+    const projekty = [...new Set(op.map((r) => r.projekt))].sort((a, b) => nazev(a).localeCompare(nazev(b), "cs"));
+    if (!projekty.length) { card.append(el("p", "empty", "V tomto období nic.")); return card; }
+    const max = Math.max(1, ...m.values());
+    const wrap = el("div", "scroll"), t = document.createElement("table"), hr = document.createElement("tr");
+    hr.append(el("th", null, "Osoba")); projekty.forEach((p) => hr.append(el("th", "num", nazev(p)))); const th = document.createElement("thead"); th.append(hr); t.append(th);
+    const tb = document.createElement("tbody");
+    [...S.lide.keys()].forEach((e) => {
+      if (S.f.osoba && e !== S.f.osoba) return;
+      const tr = document.createElement("tr"); tr.append(el("td", null, osoba(e)));
+      projekty.forEach((p) => {
+        const v = m.get(e + "|" + p) || 0, td = el("td", "cell", v ? String(v) : "·");
+        if (v) { td.style.background = `color-mix(in srgb, var(--accent) ${Math.round(15 + 70 * v / max)}%, transparent)`; td.style.fontWeight = "700"; }
+        tr.append(td);
+      }); tb.append(tr);
+    });
+    t.append(tb); wrap.append(t); card.append(wrap); return card;
+  }
+  function lide() {
+    const card = el("div", "card"); card.append(el("h2", null, "Osoby")); card.append(el("p", "note", "Zelená: aktivní do 14 dní, žlutá: do 30 dní, červená: déle nebo nikdy (za poslední rok)."));
+    const op = otevreni(S.rows.filter((r) => r.cas.getTime() >= Date.now() - S.f.dny * DAY));
+    const vse = otevreni(S.rows);
+    const wrap = el("div", "scroll"), t = document.createElement("table"), hr = document.createElement("tr");
+    ["Osoba", "Otevření v období", "Nejčastější projekt", "Zařízení", "Naposledy", "Stav"].forEach((h, i) => hr.append(el("th", i === 1 ? "num" : null, h)));
+    const th = document.createElement("thead"); th.append(hr); t.append(th); const tb = document.createElement("tbody");
+    [...S.lide.keys()].forEach((e) => {
+      const moje = op.filter((r) => r.email === e), vsechny = vse.filter((r) => r.email === e);
+      const top = [...spocti(moje, (r) => r.projekt).entries()].sort((a, b) => b[1] - a[1])[0];
+      const zar = [...spocti(vsechny, (r) => r.zarizeni).entries()].sort((a, b) => b[1] - a[1])[0];
+      const posl = vsechny.reduce((mx, r) => (r.cas > mx ? r.cas : mx), new Date(0));
+      const dny = vsechny.length ? Math.floor((Date.now() - posl) / DAY) : Infinity;
+      const stav = dny <= 14 ? ["ok", "aktivní"] : dny <= 30 ? ["warn", "méně aktivní"] : ["bad", vsechny.length ? "dlouho nic" : "nikdy"];
+      const tr = document.createElement("tr");
+      tr.append(el("td", null, osoba(e)), el("td", "num", String(moje.length)), el("td", null, top ? nazev(top[0]) : "–"),
+        el("td", null, zar ? (zar[0] === "mobil" ? "převážně mobil" : zar[0] === "pocitac" ? "převážně počítač" : "neznámé") : "–"),
+        el("td", null, vsechny.length ? pred(posl) + " (" + fmtDatum(posl) + ")" : "–"));
+      const sd = document.createElement("td"); sd.append(el("span", "status " + stav[0], stav[1])); tr.append(sd); tb.append(tr);
+    });
+    t.append(tb); wrap.append(t); card.append(wrap); return card;
+  }
+  function zaznamy(radky) {
+    const card = el("div", "card"); card.append(el("h2", null, "Poslední záznamy")); card.append(el("p", "note", "Všechny záznamy za zvolené období (nejnovější nahoře, zobrazeno nejvýš 200)."));
+    if (!radky.length) { card.append(el("p", "empty", "Žádné záznamy.")); return card; }
+    const wrap = el("div", "scroll"), t = document.createElement("table"), hr = document.createElement("tr");
+    ["Kdy", "Osoba", "Projekt", "Zdroj", "Zařízení"].forEach((h) => hr.append(el("th", null, h))); const th = document.createElement("thead"); th.append(hr); t.append(th);
+    const tb = document.createElement("tbody");
+    radky.slice().sort((a, b) => b.cas - a.cas).slice(0, 200).forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.append(el("td", null, fmtCas(r.cas)), el("td", null, osoba(r.email)), el("td", null, nazev(r.projekt)),
+        el("td", null, r.zdroj === "dlazdice" ? "klik na dlaždici" : "vstup do aplikace"), el("td", null, r.zarizeni === "mobil" ? "mobil" : r.zarizeni === "pocitac" ? "počítač" : "?"));
+      tb.append(tr);
+    });
+    t.append(tb); wrap.append(t); card.append(wrap); return card;
+  }
+  function render() {
+    app.replaceChildren();
+    const tabs = el("nav", "tabs"); tabs.setAttribute("aria-label", "Zobrazení");
+    [["prehled", "Přehled"], ["osoby", "Osoby"], ["zaznamy", "Záznamy"]].forEach(([k, t]) => {
+      const b = el("button", null, t); b.type = "button"; b.setAttribute("aria-pressed", String(S.tab === k));
+      b.addEventListener("click", () => { S.tab = k; history.replaceState(null, "", location.pathname + location.search + "#" + k); render(); }); tabs.append(b);
+    });
+    app.append(tabs, filtry());
+    const radky = filtrovane(), op = otevreni(radky);
+    if (S.tab === "prehled") app.append(kpis(op), projekty(op), podleDni(op), matice(op));
+    else if (S.tab === "osoby") app.append(lide());
+    else app.append(zaznamy(radky));
+  }
+
+  /* ---------- start ---------- */
+  function zprava(text, chyba) { const m = el("p", "msg" + (chyba ? " err" : ""), text); app.prepend(m); return m; }
+  async function start() {
+    const h = location.hash.replace("#", ""); if (["prehled", "osoby", "zaznamy"].includes(h)) S.tab = h;
+    if (DEMO) {
+      document.getElementById("demo-pill").hidden = false;
+      Object.assign(S, demoData()); render(); return;
+    }
+    try {
+      if (!A || !A.client) throw new Error("Chybí přihlášení (soubor auth.js).");
+      const sess = await A.vyzadujPrihlaseni();
+      if (!sess) return;                                              // přesměrováno na přihlášení nebo hlášení bez oprávnění
+      const jeSpravce = await A.client.rpc("je_spravce");
+      if (jeSpravce.error) throw jeSpravce.error;
+      if (jeSpravce.data !== true) {
+        app.replaceChildren(); const d = el("div", "denied"); d.append(el("h2", null, "Nemáte přístup"), el("p", "note", "Tuto stránku vidí jen správce Rozcestníku."), Object.assign(el("a", "back", "← Rozcestník"), { href: "../" })); app.append(d); return;
+      }
+      Object.assign(S, await nactiLive()); render();
+      // Úklid záznamů starších než rok (nejvýš jednou denně z tohoto zařízení).
+      try {
+        const den = new Date().toISOString().slice(0, 10);
+        if (localStorage.getItem("pristupy-uklid") !== den) {
+          const u = await A.client.rpc("uklid_pristupu");
+          if (u.error) console.warn("Úklid starých záznamů selhal:", u.error.message); else { localStorage.setItem("pristupy-uklid", den); if (u.data > 0) zprava("Smazáno " + u.data + " záznamů starších než rok."); }
+        }
+      } catch (e) { console.warn("Úklid starých záznamů selhal:", e); }
+    } catch (e) {
+      console.error("Přístupy rodiny", e);
+      app.replaceChildren(); app.append(el("p", "msg err", "Přehled se nepodařilo načíst: " + (e && e.message ? e.message : e)));
+    }
+  }
+  start();
+})();
+</script>
+</body>
+</html>

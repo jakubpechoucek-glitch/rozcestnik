@@ -1,6 +1,6 @@
 # Přístupy rodiny a stránka pro správce (návrh)
 
-Stav: **návrh k odsouhlasení, nic z toho zatím není v databázi ani v kódu.**
+Stav: **odsouhlaseno a hotovo v kódu; databáze je připravená (migrace `rozcestnik_pristupy_v1`, oprávnění otestována). Čeká na sloučení a nasazení.**
 Rozhodnuto: sledovat kliknutí na dlaždici i vstup do chráněné aplikace; ukládat přesný seznam (kdo, co, kdy); držet 1 rok; členové rodiny se o sledování dozvědí.
 
 ## K čemu to je
@@ -56,7 +56,13 @@ Zápis přístupu nesmí zpomalit ani rozbít aplikaci: odešle se na pozadí s 
 4. Věta o sledování na Rozcestníku, karta v Dokumentaci (sekce Jak je to postavené) a odkaz zpět do Rozcestníku.
 5. Kontrola nasazení a první skutečná data.
 
-## Otevřené otázky
+## Rozhodnuto
+1. Správce je člen „Jakub“.
+2. Mazání po roce: při otevření stránky správce (nejvýš jednou denně), bez rozšíření `pg_cron`.
+3. Vlastní vstupy se počítají, ve stránce jdou skrýt.
+4. Věta pro rodinu je v patičce Rozcestníku.
+
+## Původní otevřené otázky (vyřešeno)
 1. Který člen (jméno v tabulce `clenove`) má být správce? Doporučení: ten, kdo se přihlašuje jako vy.
 2. Jak mazat po roce: doporučuju denní úklid přímo v databázi, pokud je dostupný (ověřím), jinak plánovaná úloha na GitHubu.
 3. Mají se počítat i vaše vlastní vstupy? Doporučení: ano, s možností je ve stránce skrýt.

@@ -57,7 +57,7 @@ Zápis přístupu nesmí zpomalit ani rozbít aplikaci: odešle se na pozadí s 
 5. Kontrola nasazení a první skutečná data.
 
 ## Rozhodnuto
-1. Správce je člen „Jakub“.
+1. Správce je jeden vybraný člen rodiny (jméno se do veřejného repozitáře nezapisuje).
 2. Mazání po roce: při otevření stránky správce (nejvýš jednou denně), bez rozšíření `pg_cron`.
 3. Vlastní vstupy se počítají, ve stránce jdou skrýt.
 4. Věta pro rodinu je v patičce Rozcestníku.

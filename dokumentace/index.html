@@ -384,7 +384,7 @@
       </div>
     </header>
     <p class="what">Evidence a finanční přehled investičních bytů. Nahradil Excel „Karty bytů“.</p>
-    <ul class="stack"><li>Vanilla JS</li><li>Supabase + RLS</li><li>Python import</li><li>Node testy</li><li>GitHub Pages</li></ul>
+    <ul class="stack"><li>Vanilla JS</li><li>Supabase + RLS</li><li>Python import</li><li>Node testy</li><li>GitHub Actions</li><li>GitHub Pages</li></ul>
     <div class="cols">
       <div>
         <h4>Co umí</h4>
@@ -394,6 +394,7 @@
           <li>Finanční ukazatele: CAGR, yield nominální i reálný, IRR, daňové odpisy</li>
           <li>Zálohy a kauce u každé nájemní smlouvy</li>
           <li>Roční vyúčtování záloh nájemníkovi: měřiče (voda, teplo), ostatní náklady ze SVJ, odečty (Fond oprav), vyrovnání kauce při ukončení nájmu, tisk do PDF</li>
+          <li>Nový nájem: podklad pro prodloužení smlouvy. U každého bytu srovná nynější nájem s inflací nájmů (ČSÚ), tržním nájemným (Deloitte, cenová mapa Ministerstva financí) a tvým návrhem. Návrh se schvaluje přímo v aplikaci (kdo upravil, kdo schválil) a upozorní 120 dní před koncem smlouvy</li>
           <li>Úpravy dat přímo na webu</li>
         </ul>
       </div>
@@ -403,9 +404,12 @@
           <li><code>finance.js</code> obsahuje jen výpočty bez práce se stránkou, takže jde testovat (<code>node tools/test_finance.js</code>)</li>
           <li><code>vyuctovani.js</code> počítá vyúčtování (položky typu měřič, denní sazba, částka, odečet, kauce, srážka) a také se testuje (<code>node tools/test_vyuctovani.js</code>). Vyúčtování leží v tabulce <code>vyuctovani</code> v Supabase, položky jako JSON</li>
           <li>Každý byt má trochu jinou praxi (např. Fond oprav se odečítá jen u některých), proto jsou odečty samostatné řádky a ne pevný vzorec</li>
+          <li><code>najem.js</code> počítá podklad pro nový nájem (inflace, tržní Kč/m² × plocha, návrh) a má vlastní testy (<code>node tools/test_najem.js</code>). Návrhy leží v tabulce <code>najem_navrhy</code>, ručně zapsané tržní údaje v <code>najem_trh</code> (Supabase, přístup jen pro rodinu)</li>
+          <li>Inflaci nájmů stahuje samo GitHub Actions 12. a 20. v měsíci z otevřených dat ČSÚ (skript <code>tools/stahni_inflaci_najmu.py</code>) do <code>indexy/najemne-cpi.json</code> (jen veřejná čísla, žádná osobní data). Při chybě soubor nepřepíše a aplikace ukáže stáří dat</li>
+          <li>Deloitte a cenová mapa MF se zapisují ručně jednou za čtvrtletí jedním formulářem pro všechny byty: kalkulačka MF je chráněná proti automatům (reCAPTCHA) a Deloitte vydává PDF bez předvídatelného odkazu</li>
           <li><code>data.js</code> ukládá buď do Supabase, nebo do paměti v režimu <code>?demo</code></li>
           <li>Excel se jednorázově převedl skriptem <code>tools/import_excel.py</code> na SQL</li>
-          <li>Devět dokumentů: zadání, rozbor Excelu, datový model, vzorce, nalezené chyby v datech, vyúčtování záloh</li>
+          <li>Deset dokumentů: zadání, rozbor Excelu, datový model, vzorce, nalezené chyby v datech, vyúčtování záloh, nový nájem</li>
         </ul>
       </div>
     </div>

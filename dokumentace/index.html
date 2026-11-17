@@ -392,6 +392,8 @@
           <li>Přehled portfolia: hodnota, nájmy, obsazenost, blížící se termíny (konec nájmu, konec fixace)</li>
           <li>Detail bytu: historie pronájmů, hypotéka, odkazy, grafy</li>
           <li>Finanční ukazatele: CAGR, yield nominální i reálný, IRR, daňové odpisy</li>
+          <li>Zálohy a kauce u každé nájemní smlouvy</li>
+          <li>Roční vyúčtování záloh nájemníkovi: měřiče (voda, teplo), ostatní náklady ze SVJ, odečty (Fond oprav), vyrovnání kauce při ukončení nájmu, tisk do PDF</li>
           <li>Úpravy dat přímo na webu</li>
         </ul>
       </div>
@@ -399,9 +401,11 @@
         <h4>Jak je to postavené</h4>
         <ul>
           <li><code>finance.js</code> obsahuje jen výpočty bez práce se stránkou, takže jde testovat (<code>node tools/test_finance.js</code>)</li>
+          <li><code>vyuctovani.js</code> počítá vyúčtování (položky typu měřič, denní sazba, částka, odečet, kauce, srážka) a také se testuje (<code>node tools/test_vyuctovani.js</code>). Vyúčtování leží v tabulce <code>vyuctovani</code> v Supabase, položky jako JSON</li>
+          <li>Každý byt má trochu jinou praxi (např. Fond oprav se odečítá jen u některých), proto jsou odečty samostatné řádky a ne pevný vzorec</li>
           <li><code>data.js</code> ukládá buď do Supabase, nebo do paměti v režimu <code>?demo</code></li>
           <li>Excel se jednorázově převedl skriptem <code>tools/import_excel.py</code> na SQL</li>
-          <li>Osm dokumentů: zadání, rozbor Excelu, datový model, vzorce, nalezené chyby v datech</li>
+          <li>Devět dokumentů: zadání, rozbor Excelu, datový model, vzorce, nalezené chyby v datech, vyúčtování záloh</li>
         </ul>
       </div>
     </div>

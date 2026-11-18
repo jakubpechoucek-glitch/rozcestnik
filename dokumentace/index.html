@@ -607,6 +607,7 @@
           <li>Mapa světa se 177 oblastmi a časová osa s přehráváním; při letu proletí po oblouku letadélko, v měsíci s letem se osa zpomalí a několik letů v měsíci letí po sobě</li>
           <li>Filtr podle osob (všichni, společně, celá rodina, jednotlivě), statistiky zemí, cest a let na cestách, přiblížení na Asii</li>
           <li>Záložka <strong>Lety</strong> (odkaz <code>#lety</code>): přehled jen letů s hledáním a filtry, barevné označení (ověřeno / k ověření / k dořešení) a úprava přímo v řádku, včetně výběru letiště z hotového seznamu s polohou</li>
+          <li><strong>Flight entitlement</strong> (anglicky, odkaz <code>#entitlement</code>, <em>zatím jen demo ve vývoji</em>): sledování firemního nároku na letenky domů po osobách. Ukazuje zbývající nárok, ceny v originální měně s přepočtem do PHP a CZK, doplatek nad limit ceny (ke stržení ze mzdy), převody mezi osobami a export CSV nebo tisk pro kolegyni</li>
           <li>Formulář nové návštěvy a potvrzení plánované cesty; plány se jednosměrně načítají z Plánovače a samy nic neodemknou</li>
           <li>Editor cest, pobytů a přesunů (letadlo, auto, vlak, autobus, loď) pro ruční opravy historických záznamů</li>
         </ul>
@@ -616,6 +617,7 @@
         <ul>
           <li>Statická stránka bez buildu: <code>index.html</code>, <code>live.js</code> (živý režim), <code>editor.js</code>, <code>flights.js</code> a číselník letišť <code>airports.js</code></li>
           <li>Deset tabulek <code>travel_*</code> v rodinném Supabase projektu, všechny s Row Level Security jen pro členy rodiny; přihlášení je společné s Rozcestníkem</li>
+          <li>Flight entitlement: <code>entitlement.js</code> (obrazovky), <code>entitlement-calc.js</code> (výpočty bez práce se stránkou, s testy v <code>tests/</code>) a <code>entitlement.css</code>; zatím jen paměťová data v <code>?demo</code>, živý režim přijde po schválení</li>
           <li>Lety, místa i pobyty mají stav „navrženo / ověřeno“; trasa se na mapě kreslí jen u ověřeného letu s datem, polohou obou míst a cestujícími, nic se nedomýšlí</li>
           <li>Osobní údaje a doklady v repozitáři nejsou; skutečné cesty žijí jen v databázi za přihlášením</li>
         </ul>
